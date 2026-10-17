@@ -1,0 +1,136 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Logout | Giftify
+    </title>
+
+    <link
+        rel="stylesheet" href="{% static 'main/css/logout.css' %}?v=1">
+
+</head>
+
+<body>
+
+
+    <!-- LOGOUT PAGE -->
+    <main class="logout-page">
+
+        <div class="background-shape shape-one"></div>
+
+        <div class="background-shape shape-two"></div>
+
+        <div class="background-shape shape-three"></div>
+
+
+        <!-- LOGOUT CARD -->
+        <section class="logout-card">
+
+
+            <!-- Logo -->
+            <div class="logout-logo">
+
+                <span class="logo-icon">
+                    🎁
+                </span>
+
+                <span class="logo-text">
+                    Giftify
+                </span>
+
+            </div>
+
+
+            <!-- Icon -->
+            <div class="logout-icon">
+
+                <span>
+                    ↪
+                </span>
+
+            </div>
+
+
+            <!-- Heading -->
+            <h1>
+                Logout
+            </h1>
+
+
+            <!-- Message -->
+            <p class="logout-message">
+
+                Are you sure you want to logout
+                from your Giftify account?
+
+            </p>
+
+
+            <!-- ACTIONS -->
+            <div class="logout-actions">
+
+
+                <!-- Confirm Logout -->
+                <form
+                    method="POST"
+                    action="{% url 'main:confirm_logout' %}"
+                    class="logout-form"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="confirm-logout-button"
+                        id="confirmLogoutButton"
+                    >
+
+                        <span>
+                            Logout
+                        </span>
+
+                    </button>
+
+                </form>
+
+
+                <!-- Cancel -->
+                <button
+                    type="button"
+                    class="cancel-logout-button"
+                    id="cancelLogoutButton"
+                >
+
+                    Stay Logged In
+
+                </button>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <script
+        src="{% static 'main/js/logout.js' %}?v=1"
+    ></script>
+
+
+</body>
+
+</html>

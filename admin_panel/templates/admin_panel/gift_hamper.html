@@ -1,0 +1,257 @@
+{% extends 'admin_panel/layout.html' %}
+{% load static %}
+
+{% block title %}
+    GiftHamper | Giftify Admin
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin_panel/css/gift_hamper.css' %}?v=21">
+{% endblock %}
+
+{% block content %}
+
+<div class="gift-hamper-page">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Gift Hampers</h1>
+            <p>Manage your ready-made gift hampers</p>
+        </div>
+
+        <a href="{% url 'admin_panel:add_gift_hamper' %}" class="add-hamper-btn">
+            <span>+</span>
+            Add Gift Hamper
+        </a>
+
+    </div>
+
+
+    <!-- S & F -->
+    <div class="toolbar">
+
+        <div class="search-box">
+
+            <span class="search-icon">⌕</span>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search gift hampers..."
+                autocomplete="off"
+            >
+
+        </div>
+
+        <div class="filter-wrapper">
+
+            <button class="filter-btn" id="filterBtn">
+                Filter
+                <span class="arrow"></span>
+            </button>
+
+            <div class="filter-menu" id="filterMenu">
+
+                <button data-filter="az">
+                    A - Z
+                </button>
+
+                <button data-filter="za">
+                    Z - A
+                </button>
+
+                <button data-filter="low">
+                    Price: Low - High
+                </button>
+
+                <button data-filter="high">
+                    Price: High - Low
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- G H -->
+    <div id="hamperContainer" class="hamper-grid">
+
+        {% if hampers %}
+
+            {% for hamper in hampers %}
+
+            <div
+                class="hamper-card"
+                data-name="{{ hamper.name|lower }}"
+                data-price="{{ hamper.final_price }}"
+                data-category="{{ hamper.category|lower }}"
+            >
+
+                <div class="hamper-image">
+
+                    {% if hamper.image %}
+
+                        <img
+                            src="{{ hamper.image }}"
+                            alt="{{ hamper.name }}"
+                        >
+
+                    {% else %}
+
+                        <div class="no-image">
+                            🎁
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="hamper-content">
+
+                    <div class="hamper-category">
+
+                        {% if hamper.category|length == 1 %}
+
+                            {{ hamper.category.0 }}
+
+                        {% else %}
+
+                            {{ hamper.category|join:", " }}
+
+                        {% endif %}
+
+                    </div>
+
+                    <h3>{{ hamper.name }}</h3>
+
+                    <div class="hamper-bottom">
+
+                        <span class="hamper-price">
+                            ₹{{ hamper.final_price|floatformat:2 }}
+                        </span>
+
+                        <div class="hamper-actions">
+
+                            <a
+                                href="{% url 'admin_panel:edit_gift_hamper' hamper.id %}"
+                                class="edit-btn"
+                            >
+                                Edit
+                            </a>
+
+                            <button
+                                type="button"
+                                class="delete-btn"
+                                data-hamper-id="{{ hamper.id }}"
+                                data-hamper-name="{{ hamper.name }}"
+                                data-delete-url="{% url 'admin_panel:delete_gift_hamper' hamper.id %}"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <!-- Empty G H -->
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    🎁
+                </div>
+
+                <h2>No gift hampers yet</h2>
+
+                <p>
+                    Start building your Giftify collection by adding
+                    your first gift hamper.
+                </p>
+
+                <a href="{% url 'admin_panel:add_gift_hamper' %}" class="add-hamper-btn">
+                    <span>+</span>
+                    Add Gift Hamper
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- No Search Results -->
+    <div id="noResults" class="no-results">
+
+        <div class="no-results-icon">⌕</div>
+
+        <h3>No hampers found</h3>
+
+        <p>
+            Try searching with a different hamper name.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- Delete Modal -->
+<div id="deleteModal" class="delete-modal">
+
+    <div class="delete-modal-content">
+
+        <h2>Delete Gift Hamper?</h2>
+
+        <p>
+            Are you sure you want to delete
+            <strong id="deleteHamperName"></strong>?
+            <br>
+            Are you sure you want to continue?
+        </p>
+
+        <form id="deleteForm" method="POST">
+
+            {% csrf_token %}
+
+            <div class="delete-modal-actions">
+
+                <button
+                    type="button"
+                    id="cancelDelete"
+                    class="cancel-delete-btn"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="confirm-delete-btn"
+                >
+                    Delete
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'admin_panel/js/gift_hamper.js' %}?v=10"></script>
+{% endblock %}

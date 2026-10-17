@@ -1,0 +1,1005 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        My Account | Giftify
+    </title>
+
+
+    <link
+        rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- My Account CSS -->
+    <link
+        rel="stylesheet" href="{% static 'main/css/my_account.css' %}?v=29">
+
+</head>
+
+
+<body>
+
+
+<div
+    class="my-account-panel"
+    id="myAccountPage"
+>
+
+
+{% if user_id %}
+
+
+    <!-- ACCOUNT MENU VIEW -->
+    <div
+        class="account-menu-view"
+        id="accountMenuView"
+    >
+
+
+        <!-- USER PROFILE -->
+        <section class="profile-card">
+
+
+            <div class="profile-picture-wrapper">
+
+                {% if profile_picture %}
+
+                    <img
+                        src="{{ profile_picture }}"
+                        alt="Profile Picture"
+                        class="profile-picture"
+                        id="profilePicture"
+                    >
+
+                {% else %}
+
+                    <div
+                        class="profile-initials"
+                        id="profileInitials"
+                    >
+                        {{ initials }}
+                    </div>
+
+                {% endif %}
+
+
+                <input
+                    type="file"
+                    id="profilePictureInput"
+                    accept="image/*"
+                    hidden
+                >
+
+            </div>
+
+
+            <div class="profile-information">
+
+                <span class="profile-welcome">
+                    Welcome
+                </span>
+
+                <h2>
+                    {{ full_name }}
+                </h2>
+
+                {% if email %}
+
+                    <p class="profile-email">
+                        {{ email }}
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ACCOUNT OPTIONS -->
+        <section class="account-options">
+
+
+            <!-- MY ORDERS -->
+            <a
+                href="{% url 'main:my_orders' %}"
+                target="_top"
+                class="account-option-card"
+            >
+
+                <div class="account-option-icon orders-icon">
+                    <img
+                        src="{% static 'main/images/account/orders.png' %}"
+                        alt="My Orders"
+                    >
+                </div>
+
+
+                <div class="account-option-content">
+
+                    <h3>
+                        My Orders
+                    </h3>
+
+                    <p>
+                        Track your orders
+                    </p>
+
+                </div>
+
+
+                <div class="account-option-arrow">
+                    >
+                </div>
+
+            </a>
+
+
+            <!-- WISHLIST -->
+            <a
+                href="{% url 'main:wishlist' %}"
+                target="_top"
+                class="account-option-card"
+            >
+
+                <div class="account-option-icon orders-icon">
+                    <img
+                        src="{% static 'main/images/account/wishlist.png' %}"
+                        alt="My Orders"
+                    >
+                </div>
+
+
+                <div class="account-option-content">
+
+                    <h3>
+                        Wishlist
+                    </h3>
+
+                    <p>
+                        View your saved items
+                    </p>
+
+                </div>
+
+
+                <div class="account-option-arrow">
+                    >
+                </div>
+
+            </a>
+
+
+            <!-- MY CART -->
+            <a
+                href="{% url 'main:cart' %}"
+                target="_top"
+                class="account-option-card"
+            >
+
+                <div class="account-option-icon orders-icon">
+                    <img
+                        src="{% static 'main/images/account/cart.png' %}"
+                        alt="My Orders"
+                    >
+                </div>
+
+
+                <div class="account-option-content">
+
+                    <h3>
+                        My Cart
+                    </h3>
+
+                    <p>
+                        View your cart
+                    </p>
+
+                </div>
+
+
+                <div class="account-option-arrow">
+                    >
+                </div>
+
+            </a>
+
+
+            <!-- MY ADDRESS -->
+            <button
+                type="button"
+                class="account-option-card account-address-button"
+                id="myAddressButton"
+            >
+
+                <div class="account-option-icon orders-icon">
+                    <img
+                        src="{% static 'main/images/account/address.png' %}"
+                        alt="My Orders"
+                    >
+                </div>
+
+
+                <div class="account-option-content">
+
+                    <h3>
+                        My Address
+                    </h3>
+
+                    <p>
+                        Manage delivery addresses
+                    </p>
+
+                </div>
+
+
+                <div class="account-option-arrow">
+                    >
+                </div>
+
+            </button>
+
+
+            <!-- LOGOUT -->
+            <a
+                href="{% url 'main:logout' %}"
+                target="_top"
+                class="account-option-card logout-card"
+            >
+
+                <div class="account-option-icon orders-icon">
+                    <img
+                        src="{% static 'main/images/account/logou.png' %}"
+                        alt="My Orders"
+                    >
+                </div>
+
+
+                <div class="account-option-content">
+
+                    <h3>
+                        Logout
+                    </h3>
+
+                    <p>
+                        Sign out from your account
+                    </p>
+
+                </div>
+
+
+                <div class="account-option-arrow">
+                    >
+                </div>
+
+            </a>
+
+
+        </section>
+
+
+    </div>
+
+
+    <!-- MY ADDRESS VIEW -->
+    <section
+        class="address-section"
+        id="addressView"
+        style="display: none;"
+    >
+
+
+        <!-- ADDRESS HEADER -->
+        <div class="section-heading">
+
+
+            <div class="address-heading-left">
+
+
+                <button
+                    type="button"
+                    class="address-back-button"
+                    id="addressBackButton"
+                    aria-label="Back to account"
+                >
+                    <
+                </button>
+
+
+                <div>
+
+                    <h2>
+                        My Address
+                    </h2>
+
+                    <p>
+                        Manage your saved delivery addresses
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                type="button"
+                class="add-address-button"
+                id="addAddressButton"
+            >
+
+                <span>
+                    +
+                </span>
+
+                Add Address
+
+            </button>
+
+
+        </div>
+
+
+        <!-- ADDRESS LIST -->
+        <div
+            class="address-list"
+            id="addressList"
+        >
+
+            {% if addresses %}
+
+                {% for address in addresses %}
+
+                    <div
+                        class="address-card"
+                        data-address-id="{{ address.id }}"
+                    >
+
+
+                        <div class="address-card-top">
+
+
+                            <div class="address-person">
+
+
+                                <div class="address-name-row">
+
+                                    <h3>
+                                        {{ address.name }}
+                                    </h3>
+
+
+                                    {% if address.default %}
+
+                                        <span class="default-badge">
+                                            Default
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                {% if address.address_type %}
+
+                                    <span class="address-type">
+                                        {{ address.address_type }}
+                                    </span>
+
+                                {% endif %}
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="address-details">
+
+
+                            <p>
+                                {{ address.house }}
+                            </p>
+
+
+                            <p>
+                                {{ address.address }}
+                            </p>
+
+
+                            <p>
+                                {{ address.locality }}
+                            </p>
+
+
+                            <p>
+                                {{ address.city }},
+                                {{ address.state }}
+                                -
+                                {{ address.pincode }}
+                            </p>
+
+
+                            <p class="address-mobile">
+
+                                Mobile:
+                                {{ address.mobile }}
+
+                            </p>
+
+
+                        </div>
+
+                            <div class="address-actions">
+
+
+                                <button
+                                    type="button"
+                                    class="address-edit-button"
+                                    data-address-id="{{ address.id }}"
+                                >
+                                    Edit
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="address-delete-button"
+                                    data-address-id="{{ address.id }}"
+                                >
+                                    Delete
+                                </button>
+
+
+                            </div>
+
+
+                    </div>
+
+                {% endfor %}
+
+
+            {% else %}
+
+
+                <div
+                    class="empty-address"
+                    id="emptyAddress"
+                >
+
+
+                    <div class="empty-address-icon">
+                        ♡
+                    </div>
+
+
+                    <h3>
+                        No saved addresses
+                    </h3>
+
+
+                    <p>
+                        Add an address to make checkout faster.
+                    </p>
+
+
+                    <button
+                        type="button"
+                        class="empty-add-button"
+                        id="emptyAddButton"
+                    >
+                        Add New Address
+                    </button>
+
+
+                </div>
+
+
+            {% endif %}
+
+        </div>
+
+
+    </section>
+
+
+{% else %}
+
+
+    <!-- GUEST / LOGIN REQUIRED VIEW -->
+    <section class="account-login-required">
+
+        <div class="account-login-icon">
+
+            <img
+                src="{% static 'main/images/account/loginaccount.png' %}"
+                alt="Login to Account"
+            >
+
+        </div><br>
+
+        <h2>
+            Login to Continue
+        </h2>
+
+
+        <p>
+            Please login to access your account,
+            orders, wishlist, cart and saved addresses.
+        </p>
+
+
+        <a
+            href="{% url 'main:login' %}"
+            target="_top"
+            class="account-login-button"
+        >
+            Login
+        </a>
+
+
+    </section>
+
+
+{% endif %}
+
+
+</div>
+
+
+{% if user_id %}
+
+
+<!-- ADDRESS DATA -->
+{{ addresses|json_script:"giftify-addresses-data" }}
+
+
+<script>
+
+    const giftifyAddressesElement =
+        document.getElementById(
+            "giftify-addresses-data"
+        );
+
+
+    window.giftifyAddresses =
+        giftifyAddressesElement
+            ? JSON.parse(
+                giftifyAddressesElement.textContent
+            )
+            : [];
+
+</script>
+
+
+<!-- ADDRESS MODAL -->
+<div
+    class="address-modal-overlay"
+    id="addressModalOverlay"
+    style="display: none;"
+>
+
+
+    <div
+        class="address-modal"
+        id="addressModal"
+    >
+
+
+        <!-- MODAL HEADER -->
+        <div class="address-modal-header">
+
+
+            <div>
+
+                <h2 id="addressModalTitle">
+                    Add Address
+                </h2>
+
+                <p>
+                    Enter your delivery details
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="close-address-modal"
+                id="closeAddressModal"
+                aria-label="Close address modal"
+            >
+                ×
+            </button>
+
+
+        </div>
+
+
+        <!-- ADDRESS FORM -->
+        <form
+            id="addressForm"
+        >
+
+            {% csrf_token %}
+
+
+            <input
+                type="hidden"
+                id="addressId"
+                name="id"
+                value=""
+            >
+
+
+            <!-- NAME + MOBILE -->
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="addressName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="addressName"
+                        name="name"
+                        placeholder="Enter full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="addressMobile">
+                        Mobile Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="addressMobile"
+                        name="mobile"
+                        placeholder="Enter mobile number"
+                        maxlength="10"
+                        required
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <!-- HOUSE -->
+            <div class="form-group">
+
+                <label for="addressHouse">
+                    House / Flat / Building
+                </label>
+
+                <input
+                    type="text"
+                    id="addressHouse"
+                    name="house"
+                    placeholder="House / Flat / Building"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ADDRESS -->
+            <div class="form-group">
+
+                <label for="addressLine">
+                    Address
+                </label>
+
+                <textarea
+                    id="addressLine"
+                    name="address"
+                    rows="3"
+                    placeholder="Street / Area / Road"
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- LOCALITY -->
+            <div class="form-group">
+
+                <label for="addressLocality">
+                    Locality
+                </label>
+
+                <input
+                    type="text"
+                    id="addressLocality"
+                    name="locality"
+                    placeholder="Locality"
+                    required
+                >
+
+            </div>
+
+
+            <!-- CITY / STATE / PINCODE -->
+            <div class="form-row three-columns">
+
+
+                <div class="form-group">
+
+                    <label for="addressPincode">
+                        Pincode
+                    </label>
+
+                    <input
+                        type="text"
+                        id="addressPincode"
+                        name="pincode"
+                        placeholder="Pincode"
+                        maxlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="addressCity">
+                        City
+                    </label>
+
+                    <input
+                        type="text"
+                        id="addressCity"
+                        name="city"
+                        placeholder="City"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="addressState">
+                        State
+                    </label>
+
+                    <input
+                        type="text"
+                        id="addressState"
+                        name="state"
+                        placeholder="State"
+                        required
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ADDRESS TYPE -->
+            <div class="form-group">
+
+                <label>
+                    Address Type
+                </label>
+
+
+                <div class="address-type-options">
+
+
+                    <label class="address-type-option">
+
+                        <input
+                            type="radio"
+                            name="address_type"
+                            value="Home"
+                            checked
+                        >
+
+                        <span>
+                            Home
+                        </span>
+
+                    </label>
+
+
+                    <label class="address-type-option">
+
+                        <input
+                            type="radio"
+                            name="address_type"
+                            value="Work"
+                        >
+
+                        <span>
+                            Work
+                        </span>
+
+                    </label>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- RECEIVER DETAILS -->
+            <div class="optional-heading">
+
+                Receiver Details
+
+                <span>
+                    Optional
+                </span>
+
+            </div>
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="receiverName">
+                        Receiver Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="receiverName"
+                        name="receiver_name"
+                        placeholder="Receiver name"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="receiverNumber">
+                        Receiver Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="receiverNumber"
+                        name="receiver_number"
+                        placeholder="Receiver number"
+                        maxlength="10"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <!-- RECEIVER ADDRESS -->
+            <div class="form-group">
+
+                <label for="receiverAddress">
+                    Receiver Address
+                </label>
+
+                <textarea
+                    id="receiverAddress"
+                    name="receiver_address"
+                    rows="2"
+                    placeholder="Receiver address if different"
+                ></textarea>
+
+            </div>
+
+
+            <!-- MESSAGE -->
+            <div class="form-group">
+
+                <label for="addressMessage">
+                    Delivery Message
+                </label>
+
+                <textarea
+                    id="addressMessage"
+                    name="message"
+                    rows="2"
+                    placeholder="Optional delivery instructions"
+                ></textarea>
+
+            </div>
+
+
+            <!-- DEFAULT -->
+            <label class="default-address-option">
+
+                <input
+                    type="checkbox"
+                    id="addressDefault"
+                    name="default"
+                >
+
+                <span>
+                    Make this my default address
+                </span>
+
+            </label>
+
+
+            <!-- FORM BUTTONS -->
+            <div class="address-form-actions">
+
+
+                <button
+                    type="button"
+                    class="cancel-address-button"
+                    id="cancelAddressButton"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="save-address-button"
+                    id="saveAddressButton"
+                >
+                    Save Address
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<script
+    src="{% static 'main/js/my_account.js' %}?v=20"
+></script>
+
+
+{% endif %}
+
+
+</body>
+
+</html>

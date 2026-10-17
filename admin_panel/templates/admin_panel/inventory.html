@@ -1,0 +1,294 @@
+{% extends 'admin_panel/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Inventory | Giftify Admin
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin_panel/css/inventory.css' %}?v=20">
+{% endblock %}
+
+{% block content %}
+
+<div class="inventory-page">
+
+    <div class="inventory-header">
+        <div>
+            <h1>Inventory</h1>
+            <p>Manage stock for your products and gift hampers.</p>
+        </div>
+    </div>
+
+
+    <!-- Search & Filter -->
+    <div class="inventory-toolbar">
+
+        <!-- Search -->
+        <div class="inventory-search">
+            <span class="search-icon">⌕</span>
+            <input
+                type="text"
+                id="inventorySearch"
+                placeholder="Search products or gift hampers..."
+            >
+        </div>
+
+        <div class="filter-wrapper">
+
+            <button class="filter-btn" id="filterBtn">
+                Filter
+                <span class="filter-arrow"></span>
+            </button>
+
+            <div class="filter-menu" id="filterMenu">
+
+                <button data-filter="all">
+                    View All
+                </button>
+
+                <button data-filter="in-stock">
+                    In Stock
+                </button>
+
+                <button data-filter="out-of-stock">
+                    Out of Stock
+                </button>
+
+                <div class="filter-divider"></div>
+
+                <button data-filter="category">
+                    Category
+                </button>
+
+                <div class="category-menu" id="categoryMenu">
+                    <button data-category="Birthday">Birthday</button>
+                    <button data-category="Anniversary & Wedding">Anniversary & Wedding</button>
+                    <button data-category="Love & Valentine's">Love & Valentine's</button>
+                    <button data-category="Chocolate">Chocolate</button>
+                    <button data-category="Flower">Flower</button>
+                    <button data-category="Gourmet & Sweet">Gourmet & Sweet</button>
+                    <button data-category="Beauty & Wellness">Beauty & Wellness</button>
+                    <button data-category="Friendship">Friendship</button>
+                    <button data-category="Congratulations">Congratulations</button>
+                    <button data-category="Thank You">Thank You</button>
+                    <button data-category="Memory & Photo">Memory & Photo</button>
+                </div>
+
+                <div class="filter-divider"></div>
+
+                <button data-filter="product">
+                    View All Products
+                </button>
+
+                <button data-filter="hamper">
+                    View All Gift Hampers
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Inventory Table -->
+    <div class="inventory-card">
+
+        <div class="table-wrapper">
+
+            <table class="inventory-table">
+
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Current Stock</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+            
+    <tbody id="inventoryTableBody">
+
+        {% for item in inventory_items %}
+
+        <tr
+            class="inventory-row"
+            data-name="{{ item.name }}"
+            data-category="{{ item.category }}"
+            data-type="{{ item.type }}"
+            data-stock="{{ item.stock }}"
+        >
+
+            <!-- Name -->
+            <td>
+                <div class="item-info">
+
+                    {% if item.type == "product" %}
+
+                        <div class="item-icon product-icon">
+                            P
+                        </div>
+
+                    {% else %}
+
+                        <div class="item-icon hamper-icon">
+                            G
+                        </div>
+
+                    {% endif %}
+
+                    <div>
+                        <span class="item-name">
+                            {{ item.name }}
+                        </span>
+
+                        <span class="item-type">
+                            {{ item.type_name }}
+                        </span>
+                    </div>
+
+                </div>
+            </td>
+
+
+            <!-- Category -->
+            <td>
+                <span class="category-text">
+
+                    {% if item.type == "product" %}
+
+                        Product
+
+                    {% elif item.type == "hamper" %}
+
+                        {% if item.category|length == 1 %}
+                            {{ item.category.0 }}
+                        {% else %}
+                            {{ item.category|join:", " }}
+                        {% endif %}
+
+                    {% endif %}
+
+                </span>
+            </td>
+
+
+            <!-- Qty -->
+            <td>
+
+                <span class="stock-number">
+                    {{ item.stock }}
+                </span>
+
+            </td>
+
+
+            <!-- Status -->
+            <td>
+
+                {% if item.stock > 0 %}
+
+                    <span class="status-badge in-stock">
+                        <span class="status-dot"></span>
+                        In Stock
+                    </span>
+
+                {% else %}
+
+                    <span class="status-badge out-of-stock">
+                        <span class="status-dot"></span>
+                        Out of Stock
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+
+            <!-- Actions -->
+            <td>
+
+                <div class="action-buttons">
+
+                    <a
+                        href="{% url 'admin_panel:decrease_inventory' item.type item.id %}"
+                        class="stock-btn decrease-btn"
+                        title="Decrease stock"
+                    >
+                        −
+                    </a>
+
+
+                    <a
+                        href="{% url 'admin_panel:increase_inventory' item.type item.id %}"
+                        class="stock-btn increase-btn"
+                        title="Increase stock"
+                    >
+                        +
+                    </a>
+
+
+                    <a
+                        href="{% url 'admin_panel:remove_inventory' item.type item.id %}"
+                        class="remove-btn"
+                        onclick="return confirm('Remove {{ item.name }} from inventory?');"
+                    >
+                        Delete
+                    </a>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+            <td colspan="5">
+
+                <div class="no-results show">
+
+                    <div class="no-results-icon">
+                        ⌕
+                    </div>
+
+                    <h3>No inventory items yet</h3>
+
+                    <p>
+                        Add products or gift hampers to start managing inventory.
+                    </p>
+
+                </div>
+
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+
+            </table>
+
+            <!-- No Results -->
+            <div class="no-results" id="noResults">
+                <div class="no-results-icon">⌕</div>
+                <h3>No items found</h3>
+                <p>Try changing your search or filter.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'admin_panel/js/inventory.js' %}?v=10"></script>
+{% endblock %}

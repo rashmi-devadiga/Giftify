@@ -1,0 +1,230 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+            Giftify Admin
+        {% endblock %}
+    </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'admin_panel/css/layout.css' %}">
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+<body>
+<div class="admin-container">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                <span>G</span>
+            </div>
+
+            <div class="brand-info">
+
+                <h2>
+                    Giftify
+                </h2>
+
+                <p>
+                    ADMIN PORTAL
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-divider"></div>
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-section">
+                OVERVIEW
+            </p>
+
+
+            <!-- Dashboard -->
+            <a href="{% url 'admin_panel:dashboard' %}"
+               class="nav-item {% if current_page == 'dashboard' %}active{% endif %}">
+
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 13h6V4H4v9zm0 7h6v-5H4v5zm10 0h6v-9h-6v9zm0-16v5h6V4h-6z"/>
+                    </svg>
+                </span>
+
+                <span class="nav-label">
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- Catalog -->
+            <p class="nav-section">
+                CATALOG
+            </p>
+
+
+            <!-- Products -->
+            <a href="{% url 'admin_panel:product' %}"
+               class="nav-item {% if current_page == 'products' %}active{% endif %}">
+
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 8h-3V4H7v4H4c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zM9 6h6v2H9V6zm10 12H5v-6h14v6z"/>
+                    </svg>
+                </span>
+
+                <span class="nav-label">
+                    Products
+                </span>
+
+            </a>
+
+
+            <!-- Gift Hampers -->
+            <a href="{% url 'admin_panel:gift_hamper' %}"
+               class="nav-item {% if current_page == 'gifts' %}active{% endif %}">
+
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 12v8H4v-8h16zm-1-5h-3.17C16.31 6.42 16.5 5.74 16.5 5c0-1.93-1.57-3.5-3.5-3.5-1.05 0-2.1.5-3 1.5-.9-1-1.95-1.5-3-1.5C5.07 1.5 3.5 3.07 3.5 5c0 .74.19 1.42.67 2H1v5h2v8h18v-8h2V7h-4zm-6-3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5H12V5c.31-.83.69-1.5 1-1.5zm-6 0c.83 0 1.5.67 1.5 1.5S7.83 6.5 7 6.5H5.5C4.67 6.5 4 5.83 4 5s.67-1.5 1.5-1.5H7z"/>
+                    </svg>
+                </span>
+
+                <span class="nav-label">
+                    Gift Hampers
+                </span>
+
+            </a>
+
+
+            <!-- Add Gift Hamper -->
+            <a href="{% url 'admin_panel:add_gift_hamper' %}"
+               class="nav-item {% if current_page == 'add_gift' %}active{% endif %}">
+
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </svg>
+                </span>
+
+                <span class="nav-label">
+                    Add Gift
+                </span>
+
+            </a>
+
+
+            <!-- Sales -->
+            <p class="nav-section">
+                SALES
+            </p>
+
+
+            <!-- Orders -->
+            <a href="{% url 'admin_panel:orders' %}"
+                class="nav-item {% if current_page == 'orders' %}active{% endif %}">
+
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 14H7v-2h10v2zm0-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                    </svg>
+                </span>
+
+                <span class="nav-label">
+                    Orders
+                </span>
+
+            </a>
+
+
+            <!-- Inventory -->
+            <a href="{% url 'admin_panel:inventory' %}"
+               class="nav-item {% if current_page == 'stocks' %}active{% endif %}">
+
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20 8h-3V4H7v4H4c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zM9 6h6v2H9V6zm10 12H5v-6h14v6z"/>
+                    </svg>
+                </span>
+
+                <span class="nav-label">
+                    Inventory
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- Profile -->
+        <div class="sidebar-bottom">
+
+            <div class="admin-profile">
+
+                <div class="profile-avatar">
+                    A
+                </div>
+
+                <div class="profile-info">
+
+                    <strong>
+                        Admin
+                    </strong>
+
+                    <span>
+                        Giftify Manager
+                    </span>
+
+                </div>
+
+                <button class="profile-more">
+                    ⋮
+                </button>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+<script src="{% static 'admin_panel/js/layout.js' %}">
+</script>
+
+{% block extra_js %}
+{% endblock %}
+
+</body>
+</html>

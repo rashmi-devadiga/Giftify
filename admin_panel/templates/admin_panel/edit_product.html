@@ -1,0 +1,264 @@
+{% extends 'admin_panel/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Edit Product | Giftify Admin
+{% endblock %}
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet" href="{% static 'admin_panel/css/edit_product.css' %}?v=13">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="edit-product-page">
+
+    <div class="edit-product-header">
+
+        <div>
+
+            <h1>Edit Product</h1>
+
+            <p>
+                Update the information of your Giftify product.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'admin_panel:product' %}"
+            class="back-products-btn"
+        >
+            < Back to Products
+        </a>
+
+    </div>
+
+
+    <!-- Edit Form -->
+    <div class="edit-product-card">
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+            <!-- P Name -->
+            <div class="form-group">
+
+                <label for="product_name">
+                    Product Name
+                </label>
+
+                <input
+                    type="text"
+                    id="product_name"
+                    name="product_name"
+                    value="{{ product.name }}"
+                    placeholder="Enter product name"
+                    required
+                >
+
+            </div>
+
+            <!-- Price -->
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="price">
+                        Price
+                    </label>
+
+                    <div class="price-input">
+
+                        <span>₹</span>
+
+                        <input
+                            type="number"
+                            id="price"
+                            name="price"
+                            value="{{ product.price }}"
+                            step="0.01"
+                            min="0"
+                            placeholder="Enter price"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Qty & Avail -->
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="quantity">
+                        Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        value="{{ product.stock }}"
+                        min="0"
+                        placeholder="Enter quantity"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Availability
+                    </label>
+
+                    <div class="availability-options">
+
+                        <label class="availability-option">
+
+                            <input
+                                type="radio"
+                                name="availability"
+                                value="available"
+                                {% if product.availability == 'available' %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <span>
+                                Available
+                            </span>
+
+                        </label>
+
+
+                        <label class="availability-option">
+
+                            <input
+                                type="radio"
+                                name="availability"
+                                value="out_of_stock"
+                                {% if product.availability == 'out_of_stock' %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <span>
+                                Out of Stock
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- P Img -->
+            <div class="form-group">
+
+                <label>
+                    Product Image
+                </label>
+
+
+                {% if product.image %}
+
+                <div class="current-image">
+
+                    <img
+                        src="{{ product.image }}"
+                        alt="{{ product.name }}"
+                    >
+
+                    <div>
+
+                        <strong>
+                            Current Image
+                        </strong>
+
+                        <p>
+                            Choose a new image only if you want
+                            to replace the current one.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                <input
+                    type="file"
+                    name="product_image"
+                    id="product_image"
+                    accept="image/*"
+                >
+
+            </div>
+
+
+            <!-- Desc -->
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="6"
+                    placeholder="Enter product description"
+                >{{ product.description }}</textarea>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'admin_panel:product' %}"
+                    class="cancel-product-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="update-product-btn"
+                >
+                    Update Product
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="{% static 'admin_panel/js/edit_product.js' %}?v=11"></script>
+
+{% endblock %}

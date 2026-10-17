@@ -1,0 +1,497 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+
+{% block title %}
+    Customize Hampers | Giftify
+{% endblock %}
+
+
+{% block extra_css %}
+<link
+    rel="stylesheet" href="{% static 'main/css/customize.css' %}?v=32">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="customize-page">
+
+
+    {% if hampers %}
+
+        <div
+            class="customize-grid"
+            id="customizeGrid"
+        >
+
+            {% for hamper in hampers %}
+
+                <a
+                    href="{% url 'main:view_gift_hamper' hamper.id %}"
+                    class="customize-card-link"
+                >
+
+                    <div
+                        class="
+                            customize-card
+                            {% if hamper.stock_quantity|default:0 <= 0 %}
+                                customize-out-of-stock
+                            {% endif %}
+                        "
+
+                        data-name="{{ hamper.name|lower }}"
+
+                        data-category="{% for category in hamper.category %}{{ category|lower }}{% if not forloop.last %}|{% endif %}{% endfor %}"
+
+                        data-price="{{ hamper.selling_price|default:0 }}"
+
+                        data-customizable="{{ hamper.customization|default:''|lower }}"
+                    >
+
+
+                        <!-- IMAGE -->
+                        <div class="customize-image">
+
+                            {% if hamper.image %}
+
+                                <img
+                                    src="{{ hamper.image }}"
+                                    alt="{{ hamper.name }}"
+                                >
+
+                            {% else %}
+
+                                <div class="no-customize-image">
+                                    🎁
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- WISHLIST -->
+                            <button
+                                type="button"
+                                class="customize-like-button"
+
+                                data-id="{{ hamper.id }}"
+
+                                data-name="{{ hamper.name }}"
+
+                                data-price="{{ hamper.selling_price }}"
+
+                                data-image="{{ hamper.image }}"
+
+                                aria-label="Add to wishlist"
+                            >
+                                ♡
+                            </button>
+
+                        </div>
+
+
+                        <!-- DIVIDER -->
+                        <div class="customize-divider"></div>
+
+
+                        <!-- DETAILS -->
+                        <div class="customize-details">
+
+                            <h3>
+                                {{ hamper.name }}
+                            </h3>
+
+
+                            {% if hamper.selling_price %}
+
+                                <span class="customize-price">
+                                    ₹{{ hamper.selling_price }}
+                                </span>
+
+                            {% endif %}
+
+
+                            {% if hamper.discount %}
+
+                                <span class="customize-discount">
+                                    {{ hamper.discount }}% OFF
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- EMPTY STATE -->
+        <div class="empty-customize">
+
+            <div class="empty-customize-icon">
+
+                <img
+                    src="{% static 'main/images/account/loginorder' %}"
+                    alt="No customizable hampers"
+                >
+
+            </div>
+
+            <h2>
+                No Customizable Hampers Yet
+            </h2>
+
+            <p>
+                Personalized gift hampers will appear here
+                once they are added.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- FLOATING FILTER BUTTON -->
+<button
+    type="button"
+    class="customize-floating-filter"
+    id="customizeFloatingFilterBtn"
+>
+
+    <span class="customize-filter-icon">
+
+        <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+        >
+
+            <path d="M4 7h10M18 7h2M4 17h2M10 17h10"></path>
+
+            <circle
+                cx="16"
+                cy="7"
+                r="2"
+            ></circle>
+
+            <circle
+                cx="8"
+                cy="17"
+                r="2"
+            ></circle>
+
+        </svg>
+
+    </span>
+
+
+    <span class="customize-filter-text">
+        Filter
+    </span>
+
+</button>
+
+
+<!-- FILTER OVERLAY -->
+<div
+    class="customize-filter-overlay"
+    id="customizeFilterOverlay"
+></div>
+
+
+<!-- FILTER PANEL -->
+<div
+    class="customize-filter-panel"
+    id="customizeFilterPanel"
+>
+
+
+    <!-- HEADER -->
+    <div class="customize-filter-header">
+
+        <div>
+
+            <span class="customize-filter-brand">
+                Giftify
+            </span>
+
+            <h3>
+                Filter Hampers
+            </h3>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="customize-filter-close"
+            id="customizeFilterClose"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <!-- FILTER OPTIONS -->
+    <div
+        class="customize-filter-options"
+        id="customizeFilterOptions"
+    >
+
+
+        <!-- LOW → HIGH -->
+        <button
+            type="button"
+            class="customize-filter-option"
+            id="customizeLowHighBtn"
+        >
+
+            <div>
+
+                <strong>
+                    Low - High Price
+                </strong>
+
+                <small>
+                    Start with the most affordable
+                </small>
+
+            </div>
+
+            <span>
+                ›
+            </span>
+
+        </button>
+
+
+        <!-- HIGH → LOW -->
+        <button
+            type="button"
+            class="customize-filter-option"
+            id="customizeHighLowBtn"
+        >
+
+            <div>
+
+                <strong>
+                    High - Low Price
+                </strong>
+
+                <small>
+                    Start with the premium hampers
+                </small>
+
+            </div>
+
+            <span>
+                ›
+            </span>
+
+        </button>
+
+
+
+        <!-- CATEGORY -->
+        <button
+            type="button"
+            class="customize-filter-option"
+            id="customizeCategoryBtn"
+        >
+
+            <div>
+
+                <strong>
+                    Category
+                </strong>
+
+                <small>
+                    Choose an occasion or gift type
+                </small>
+
+            </div>
+
+            <span>
+                ›
+            </span>
+
+        </button>
+
+    </div>
+
+
+    <!-- CATEGORY SCREEN -->
+    <div
+        class="customize-category-screen"
+        id="customizeCategoryScreen"
+    >
+
+        <!-- CATEGORY HEADER -->
+        <div class="customize-category-heading">
+
+            <button
+                type="button"
+                id="customizeCategoryBack"
+                class="customize-category-back"
+            >
+                <
+            </button>
+
+
+            <div>
+
+                <strong>
+                    Choose Category
+                </strong>
+
+                <small>
+                    Find the perfect gift
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CATEGORIES -->
+        <div class="customize-category-list">
+
+
+            <button
+                type="button"
+                data-category="Birthday"
+            >
+                Birthday
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Anniversary & Wedding"
+            >
+                Anniversary & Wedding
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Love & Valentine's"
+            >
+                Love & Valentine's
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Chocolate"
+            >
+                Chocolate
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Flower"
+            >
+                Flower
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Gourmet & Sweet"
+            >
+                Gourmet & Sweet
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Beauty & Wellness"
+            >
+                Beauty & Wellness
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Friendship"
+            >
+                Friendship
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Congratulations"
+            >
+                Congratulations
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Thank You"
+            >
+                Thank You
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Memory & Photo"
+            >
+                Memory & Photo
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Plants & Green"
+            >
+                Plants & Green
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Accessories & Fashion"
+            >
+                Accessories & Fashion
+            </button>
+
+
+            <button
+                type="button"
+                data-category="Mini Gift"
+            >
+                Mini Gift
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{% static 'main/js/customize.js' %}?v=24"
+></script>
+
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Giftify Chat | Giftify
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'main/css/giftify_chat.css' %}?v=37">
+{% endblock %}
+
+{% block content %}
+
+<div
+    class="giftify-chat-page"
+    id="giftifyChatPage"
+    data-hamper-url-template="{% url 'main:view_gift_hamper' 'HAMPerIdPlaceholder' %}"
+>
+
+    <!-- CHAT HEADER -->
+    <header class="giftify-chat-header">
+
+        <div class="chat-header-left">
+
+            <a
+                href="{% url 'main:home' %}"
+                class="chat-home-button"
+                title="Home"
+            >
+                G
+            </a>
+
+            <div class="chat-header-text">
+                <h1>Giftify Chat</h1>
+                <span>Personal Gift Finder</span>
+            </div>
+
+        </div>
+
+
+        <!-- MENU -->
+        <div class="chat-menu-wrapper">
+
+            <button
+                type="button"
+                class="chat-menu-button"
+                id="chatMenuButton"
+                aria-label="Chat menu"
+            >
+                ⋮
+            </button>
+
+            <div
+                class="chat-menu"
+                id="chatMenu"
+            >
+
+                <button
+                    type="button"
+                    id="restartChatButton"
+                >
+                    Restart Chat
+                </button>
+
+                <a href="{% url 'main:gift_hamper' %}">
+                    Gift Hampers
+                </a>
+
+                <a href="{% url 'main:home' %}">
+                    Home
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!--  CHAT BODY -->
+    <main
+        class="giftify-chat-body"
+        id="giftifyChatBody"
+    >
+
+        <!-- Messages are inserted by JavaScript -->
+
+    </main>
+
+
+    <!-- CHAT FOOTER -->
+    <footer class="giftify-chat-footer">
+
+        <div class="chat-footer-content">
+
+            <span class="footer-gift-icon">
+                
+            </span>
+
+            <span>
+                Find the perfect gift with Giftify
+            </span>
+
+        </div>
+
+    </footer>
+
+</div>
+
+
+<!-- FIRESTORE HAMPER DATA -->
+
+{{ hampers|json_script:"giftify-hampers-data" }}
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="{% static 'main/js/giftify_chat.js' %}?v=25"></script>
+
+{% endblock %}

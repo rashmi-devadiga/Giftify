@@ -1,0 +1,811 @@
+{% extends "admin_panel/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Order Details | Giftify Admin
+{% endblock %}
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet" href="{% static 'admin_panel/css/order_detail.css' %}?v=1">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="order-detail-page">
+
+    <div class="order-detail-header">
+
+        <div>
+
+            <h1>
+                Order Details
+            </h1>
+
+            <div class="order-meta">
+
+                <span>
+                    {{ order.order_id }}
+                </span>
+
+                <span class="meta-dot">
+                    •
+                </span>
+
+                <span>
+                    Placed {{ order.order_date }}
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- Close -->
+        <a
+            href="{% url 'admin_panel:orders' %}"
+            class="close-button"
+            aria-label="Close"
+        >
+            ×
+        </a>
+
+    </div>
+
+
+    <!-- ID & Date -->
+    <div class="order-id-card">
+
+        <div>
+
+            <span class="small-label">
+                Order ID
+            </span>
+
+            <strong>
+                {{ order.order_id }}
+            </strong>
+
+        </div>
+
+        <div class="placed-info">
+
+            <span class="small-label">
+                Placed On
+            </span>
+
+            <strong>
+                {{ order.order_date }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- Delivery Address -->
+    <section class="detail-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Delivery Address
+            </h2>
+
+        </div>
+
+        <div class="address-card">
+
+            <div class="address-top">
+
+                <div class="address-avatar">
+
+                    {{ order.address.name|slice:":1"|upper }}
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        {{ order.address.name }}
+                    </h3>
+
+                    {% if order.address.address_type %}
+
+                    <span class="address-type">
+                        {{ order.address.address_type }}
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="address-content">
+
+                {% if order.address.house %}
+
+                <p>
+                    {{ order.address.house }}
+                </p>
+
+                {% endif %}
+
+
+                {% if order.address.address %}
+
+                <p>
+                    {{ order.address.address }}
+                </p>
+
+                {% endif %}
+
+
+                {% if order.address.locality %}
+
+                <p>
+                    {{ order.address.locality }}
+                </p>
+
+                {% endif %}
+
+
+                <p>
+
+                    {% if order.address.city %}
+                        {{ order.address.city }}
+                    {% endif %}
+
+                    {% if order.address.state %}
+                        , {{ order.address.state }}
+                    {% endif %}
+
+                    {% if order.address.pincode %}
+                        - {{ order.address.pincode }}
+                    {% endif %}
+
+                </p>
+
+
+                {% if order.address.mobile %}
+
+                <p class="mobile-number">
+
+                    <span>
+                        Mobile
+                    </span>
+
+                    {{ order.address.mobile }}
+
+                </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Receiver Address -->
+            {% if order.address.address_type == "someone_else" or order.receiver_name or order.receiver_number or order.receiver_address or order.message %}
+
+            <div class="receiver-info">
+
+                <span>
+                    Gift Receiver
+                </span>
+
+
+                {% if order.receiver_name or order.address.receiver_name %}
+
+                <strong>
+                    {% if order.receiver_name %}
+                        {{ order.receiver_name }}
+                    {% else %}
+                        {{ order.address.receiver_name }}
+                    {% endif %}
+                </strong>
+
+                {% endif %}
+
+
+                {% if order.receiver_number or order.address.receiver_number %}
+
+                <small>
+                    Phone:
+                    {% if order.receiver_number %}
+                        {{ order.receiver_number }}
+                    {% else %}
+                        {{ order.address.receiver_number }}
+                    {% endif %}
+                </small>
+
+                {% endif %}
+
+
+                {% if order.receiver_address or order.address.receiver_address %}
+
+                <small>
+                    Address:
+                    {% if order.receiver_address %}
+                        {{ order.receiver_address }}
+                    {% else %}
+                        {{ order.address.receiver_address }}
+                    {% endif %}
+                </small>
+
+                {% endif %}
+
+
+                {% if order.message or order.address.message %}
+
+                <small>
+                    Message:
+                    {% if order.message %}
+                        {{ order.message }}
+                    {% else %}
+                        {{ order.address.message }}
+                    {% endif %}
+                </small>
+
+                {% endif %}
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Item Details -->
+    <section class="detail-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Item Details
+            </h2>
+
+            <span>
+                {{ order.items|length }} item{{ order.items|length|pluralize }}
+            </span>
+
+        </div>
+
+        <div class="items-card">
+
+            {% for item in order.items %}
+
+            <div class="order-item">
+
+                <!-- Img -->
+                <div class="item-image">
+
+                    {% if item.image %}
+
+                    <img
+                        src="{{ item.image }}"
+                        alt="{{ item.name }}"
+                    >
+
+                    {% else %}
+
+                    <div class="image-placeholder">
+                        Gift
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+                <!-- Info -->
+                <div class="item-information">
+
+                    <h3>
+                        {{ item.name }}
+                    </h3>
+
+                    <!-- Included Items / Added Products -->
+                    {% if item.included_items %}
+
+                        <div class="included-products">
+
+                            <div class="included-products-title">
+                                INCLUDED / ADDED PRODUCTS
+                            </div>
+
+                            {% for product in item.included_items %}
+
+                                <div class="included-product-row">
+
+                                    <div class="included-product-name">
+                                        {{ product.name }}
+                                    </div>
+
+                                    <div class="included-product-quantity">
+                                        Qty: {{ product.quantity }}
+                                    </div>
+
+                                    <div class="included-product-price">
+                                        ₹{{ product.price|floatformat:2 }}
+                                    </div>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <!-- Total Price -->
+                <div class="item-price">
+
+                    <span>
+                        Total Price
+                    </span>
+
+                    <strong>
+                        ₹{{ item.total_amount|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            {% if not forloop.last %}
+
+            <div class="item-divider"></div>
+
+            {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Price Details -->
+    <section class="detail-section price-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Price Details
+            </h2>
+
+        </div>
+
+        <div class="price-card">
+
+            <div class="price-row">
+
+                <span>
+                    Total Price
+                </span>
+
+                <strong>
+                    ₹{{ order.total_price|floatformat:2 }}
+                </strong>
+
+            </div>
+
+            <div class="price-row discount-row">
+
+                <span>
+                    Total Discount
+                </span>
+
+                <strong>
+                    - ₹{{ order.total_discount|floatformat:2 }}
+                </strong>
+
+            </div>
+
+            <div class="price-row">
+
+                <span>
+                    Delivery Charge
+                </span>
+
+                <strong>
+                    ₹{{ order.total_delivery|floatformat:2 }}
+                </strong>
+
+            </div>
+
+            <div class="price-divider"></div>
+
+            <div class="price-row grand-total-row">
+
+                <span>
+                    Total Amount
+                </span>
+
+                <strong>
+                    ₹{{ order.grand_total|floatformat:2 }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Payment -->
+    <section class="detail-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Payment
+            </h2>
+
+        </div>
+
+
+        <div class="payment-card">
+
+            <div class="payment-method">
+
+                <span class="payment-icon">
+
+                    {% if order.payment_method == "UPI" %}
+                        UPI
+                    {% else %}
+                        COD
+                    {% endif %}
+
+                </span>
+
+                <div>
+
+                    <span class="payment-label">
+                        Payment Method
+                    </span>
+
+                    <strong>
+                        {{ order.payment_method }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div class="payment-status">
+
+                <span class="payment-label">
+                    Payment Status
+                </span>
+
+
+                {% if order.payment_status == "Paid" %}
+
+                <span class="payment-status-badge paid">
+                    Paid
+                </span>
+
+                {% else %}
+
+                <span class="payment-status-badge pending">
+                    Pending
+                </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Order Status -->
+    <section class="detail-section status-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Order Status
+            </h2>
+
+        </div>
+
+
+        <div class="status-card">
+
+            <div class="status-stepper">
+
+
+                <!-- Confirmed -->
+                <div
+                    class="status-step
+                    {% if order.status == 'Order Confirmed' or order.status == 'Packed' or order.status == 'Shipped' or order.status == 'Delivered' %}
+                        completed
+                    {% endif %}"
+                >
+
+                    <div class="step-circle">
+                        ✓
+                    </div>
+
+                    <span>
+                        Order Confirmed
+                    </span>
+
+                </div>
+
+
+                <div class="step-line
+                    {% if order.status == 'Packed' or order.status == 'Shipped' or order.status == 'Delivered' %}
+                        completed
+                    {% endif %}
+                ">
+                </div>
+
+
+                <!-- Packed -->
+                <div
+                    class="status-step
+                    {% if order.status == 'Packed' or order.status == 'Shipped' or order.status == 'Delivered' %}
+                        completed
+                    {% endif %}"
+                >
+
+                    <div class="step-circle">
+
+                        {% if order.status == "Packed" or order.status == "Shipped" or order.status == "Delivered" %}
+                            ✓
+                        {% else %}
+                            2
+                        {% endif %}
+
+                    </div>
+
+                    <span>
+                        Packed
+                    </span>
+
+                </div>
+
+
+                <div class="step-line
+                    {% if order.status == 'Shipped' or order.status == 'Delivered' %}
+                        completed
+                    {% endif %}
+                ">
+                </div>
+
+
+                <!-- Shipped -->
+                <div
+                    class="status-step
+                    {% if order.status == 'Shipped' or order.status == 'Delivered' %}
+                        completed
+                    {% endif %}"
+                >
+
+                    <div class="step-circle">
+
+                        {% if order.status == "Shipped" or order.status == "Delivered" %}
+                            ✓
+                        {% else %}
+                            3
+                        {% endif %}
+
+                    </div>
+
+                    <span>
+                        Shipped
+                    </span>
+
+                </div>
+
+
+                <div class="step-line
+                    {% if order.status == 'Delivered' %}
+                        completed
+                    {% endif %}
+                ">
+                </div>
+
+
+                <!-- Delivered -->
+                <div
+                    class="status-step
+                    {% if order.status == 'Delivered' %}
+                        completed
+                    {% endif %}"
+                >
+
+                    <div class="step-circle">
+
+                        {% if order.status == "Delivered" %}
+                            ✓
+                        {% else %}
+                            4
+                        {% endif %}
+
+                    </div>
+
+                    <span>
+                        Delivered
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Current Status -->
+            <div class="current-status">
+
+                <span>
+                    Current Status
+                </span>
+
+                <strong>
+                    {{ order.status }}
+                </strong>
+
+            </div>
+
+
+            <!-- Update Form -->
+            <form
+                method="POST"
+                action="{% url 'admin_panel:update_order_status' order.order_id %}"
+                class="status-form"
+                id="statusForm"
+            >
+
+                {% csrf_token %}
+
+                <div class="status-select-wrapper">
+
+                    <label for="statusSelect">
+                        Update Status
+                    </label>
+
+                    <select
+                        name="status"
+                        id="statusSelect"
+                    >
+
+                        <option
+                            value="Order Confirmed"
+                            {% if order.status == "Order Confirmed" %}
+                                selected
+                            {% endif %}
+                        >
+                            Order Confirmed
+                        </option>
+
+                        <option
+                            value="Packed"
+                            {% if order.status == "Packed" %}
+                                selected
+                            {% endif %}
+                        >
+                            Packed
+                        </option>
+
+
+                        <option
+                            value="Shipped"
+                            {% if order.status == "Shipped" %}
+                                selected
+                            {% endif %}
+                        >
+                            Shipped
+                        </option>
+
+
+                        <option
+                            value="Delivered"
+                            {% if order.status == "Delivered" %}
+                                selected
+                            {% endif %}
+                        >
+                            Delivered
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="update-status-button"
+                >
+                    Update Status
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- Status Confirmation Modal -->
+<div
+    class="status-modal"
+    id="statusModal"
+>
+
+    <div class="status-modal-overlay"></div>
+
+
+    <div class="status-modal-box">
+
+        <button
+            type="button"
+            class="modal-close"
+            id="modalClose"
+        >
+            ×
+        </button>
+
+
+        <div class="modal-icon">
+            ✓
+        </div>
+
+
+        <h3>
+            Update Order Status?
+        </h3>
+
+
+        <p>
+            The order status will be changed to
+            <strong id="newStatusText"></strong>.
+        </p>
+
+
+        <div class="modal-actions">
+
+            <button
+                type="button"
+                class="cancel-button"
+                id="cancelStatus"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="confirm-button"
+                id="confirmStatus"
+            >
+                Update Status
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{% static 'admin_panel/js/order_detail.js' %}?v=1"
+></script>
+
+{% endblock %}

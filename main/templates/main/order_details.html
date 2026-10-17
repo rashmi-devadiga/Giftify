@@ -1,0 +1,535 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Order Details | Giftify
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'main/css/order_details.css' %}?v=12">
+{% endblock %}
+
+{% block content %}
+
+<div class="order-details-page">
+
+    <!-- BACK TO ORDERS -->
+    <a href="{% url 'main:my_orders' %}" class="back-orders">
+        &lt; Back
+    </a>
+
+
+    <!-- HEADER -->
+    <div class="order-details-header">
+
+        <h1>Order Details</h1>
+
+        <div class="order-meta">
+
+            <div>
+                <span>Order ID</span>
+                <strong>#{{ order.order_id }}</strong>
+            </div>
+
+            <div>
+                <span>Placed on</span>
+                <strong>{{ order.order_date }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ORDER STATUS -->
+    <section class="details-card status-card">
+
+        <div class="card-title">
+            <h2>Order Status</h2>
+        </div>
+
+
+        <div class="status-timeline">
+
+
+            <!-- CONFIRMED -->
+            <div class="status-step
+                {% if status == 'Order Confirmed' or status == 'Packed' or status == 'Shipped' or status == 'Delivered' %}
+                    active
+                {% endif %}">
+
+                <div class="status-circle">
+
+                    {% if status == 'Order Confirmed' or status == 'Packed' or status == 'Shipped' or status == 'Delivered' %}
+                        ✓
+                    {% else %}
+                        ○
+                    {% endif %}
+
+                </div>
+
+                <span>Order Confirmed</span>
+
+            </div>
+
+
+            <div class="status-line
+                {% if status == 'Packed' or status == 'Shipped' or status == 'Delivered' %}
+                    active-line
+                {% endif %}">
+            </div>
+
+
+            <!-- PACKED -->
+            <div class="status-step
+                {% if status == 'Packed' or status == 'Shipped' or status == 'Delivered' %}
+                    active
+                {% endif %}">
+
+                <div class="status-circle">
+
+                    {% if status == 'Packed' or status == 'Shipped' or status == 'Delivered' %}
+                        ✓
+                    {% else %}
+                        ○
+                    {% endif %}
+
+                </div>
+
+                <span>Order Packed</span>
+
+            </div>
+
+
+            <div class="status-line
+                {% if status == 'Shipped' or status == 'Delivered' %}
+                    active-line
+                {% endif %}">
+            </div>
+
+
+            <!-- SHIPPED -->
+            <div class="status-step
+                {% if status == 'Shipped' or status == 'Delivered' %}
+                    active
+                {% endif %}">
+
+                <div class="status-circle">
+
+                    {% if status == 'Shipped' or status == 'Delivered' %}
+                        ✓
+                    {% else %}
+                        ○
+                    {% endif %}
+
+                </div>
+
+                <span>Shipped</span>
+
+            </div>
+
+
+            <div class="status-line
+                {% if status == 'Delivered' %}
+                    active-line
+                {% endif %}">
+            </div>
+
+
+            <!-- DELIVERED -->
+            <div class="status-step
+                {% if status == 'Delivered' %}
+                    active
+                {% endif %}">
+
+                <div class="status-circle">
+
+                    {% if status == 'Delivered' %}
+                        ✓
+                    {% else %}
+                        ○
+                    {% endif %}
+
+                </div>
+
+                <span>Delivered</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ITEM DETAILS -->
+    <section class="details-card">
+
+        <div class="card-title">
+            <h2>Item Details</h2>
+        </div>
+
+
+        <div class="item-details">
+
+            <div class="item-image">
+
+                {% if order.image %}
+
+                    <img
+                        src="{{ order.image }}"
+                        alt="{{ order.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="no-image">
+                        Gift
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="item-info">
+
+                <h3>
+                    {{ order.name }}
+                </h3>
+
+
+                <p class="included-title">
+                    Items Included
+                </p>
+
+
+                <div class="included-items">
+
+                    {% if order.items %}
+
+                        {% for item in order.items %}
+
+                            {% if item.item_name %}
+                                <span>
+                                    {{ item.item_name }}
+                                </span>
+
+                            {% elif item.name %}
+
+                                <span>
+                                    {{ item.name }}
+                                </span>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <span>
+                            Gift hamper
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="item-price">
+
+                ₹{{ order.total_amount|floatformat:0 }}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRICE DETAILS -->
+    <section class="details-card">
+
+        <div class="card-title">
+            <h2>Price Details</h2>
+        </div>
+
+
+        <div class="price-details">
+
+            <div class="price-row">
+
+                <span>
+                    Item Price
+                </span>
+
+                <strong>
+                    ₹{{ order.selling_price|floatformat:0 }}
+                </strong>
+
+            </div>
+
+
+            <div class="price-row discount-row">
+
+                <span>
+                    Discount
+                </span>
+
+                <strong>
+                    -₹{{ order.discount_amount|floatformat:0 }}
+                </strong>
+
+            </div>
+
+
+            <div class="price-row">
+
+                <span>
+                    Delivery Charge
+                </span>
+
+                <strong>
+                    ₹{{ order.delivery_charge|floatformat:0 }}
+                </strong>
+
+            </div>
+
+
+            <div class="price-divider"></div>
+
+
+            <div class="price-row total-row">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ₹{{ order.total_amount|floatformat:0 }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- DELIVERY ADDRESS -->
+    <section class="details-card">
+
+        <div class="card-title">
+            <h2>Delivery Address</h2>
+        </div>
+
+
+        <div class="address-details">
+
+
+            <!-- NORMAL ADDRESS DETAILS -->
+            <div class="address-row">
+
+                <span>Name</span>
+
+                <strong>
+                    {{ order.address.name|default:"Not available" }}
+                </strong>
+
+            </div>
+
+
+            <div class="address-row">
+
+                <span>Mobile Number</span>
+
+                <strong>
+                    {{ order.address.mobile|default:"Not available" }}
+                </strong>
+
+            </div>
+
+
+            <div class="address-row">
+
+                <span>House / Building</span>
+
+                <strong>
+                    {{ order.address.house|default:"Not available" }}
+                </strong>
+
+            </div>
+
+
+            <div class="address-row">
+
+                <span>Locality, City</span>
+
+                <strong>
+
+                    {% if order.address.locality %}
+                        {{ order.address.locality }},
+                    {% endif %}
+
+                    {{ order.address.city|default:"" }}
+
+                </strong>
+
+            </div>
+
+
+            <div class="address-row">
+
+                <span>State – PIN Code</span>
+
+                <strong>
+
+                    {{ order.address.state|default:"" }}
+
+                    {% if order.address.pincode %}
+                        – {{ order.address.pincode }}
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+
+            <!-- SOMEONE ELSE RECEIVER DETAILS ONLY SHOWN WHEN AVAILABLE -->
+            {% if order.address.address_type == "someone_else" or order.receiver_name or order.receiver_number or order.receiver_address or order.message %}
+
+
+                <div class="address-row">
+
+                    <span>Receiver Name</span>
+
+                    <strong>
+                        {{ order.receiver_name|default:order.address.receiver_name|default:"Not available" }}
+                    </strong>
+
+                </div>
+
+
+                <div class="address-row">
+
+                    <span>Receiver Phone Number</span>
+
+                    <strong>
+                        {{ order.receiver_number|default:order.address.receiver_number|default:"Not available" }}
+                    </strong>
+
+                </div>
+
+
+                <div class="address-row">
+
+                    <span>Receiver Address</span>
+
+                    <strong>
+                        {{ order.receiver_address|default:order.address.receiver_address|default:"Not available" }}
+                    </strong>
+
+                </div>
+
+
+                <div class="address-row">
+
+                    <span>Message</span>
+
+                    <strong>
+                        {{ order.message|default:order.address.message|default:"Not available" }}
+                    </strong>
+
+                </div>
+
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- PAYMENT -->
+    <section class="details-card">
+
+        <div class="card-title">
+            <h2>Payment</h2>
+        </div>
+
+
+        <div class="payment-details">
+
+            <div class="payment-row">
+
+                <span>
+                    Payment Method
+                </span>
+
+                <strong>
+
+                    {% if order.payment_method == "cod" %}
+                        Cash on Delivery
+                    {% else %}
+                        {{ order.payment_method|upper }}
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+
+            <div class="payment-row">
+
+                <span>
+                    Payment Status
+                </span>
+
+
+                <span class="
+                    payment-status
+                    {% if payment_status == 'Paid' %}
+                        paid
+                    {% else %}
+                        pending
+                    {% endif %}
+                ">
+
+                    {% if payment_status == "Paid" %}
+                        Paid
+                    {% else %}
+                        Pending
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTINUE SHOPPING -->
+    <div class="order-bottom">
+
+        <a href="{% url 'main:gift_hamper' %}"
+           class="continue-shopping">
+
+            Continue Shopping
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="{% static 'main/js/order_details.js' %}?v=1"></script>
+
+{% endblock %}

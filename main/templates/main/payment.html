@@ -1,0 +1,210 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Payment | Giftify
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet" href="{% static 'main/css/payment.css' %}?v=18">
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="payment-page">
+
+
+    <!-- CSRF TOKEN -->
+    <form
+        id="paymentForm"
+        style="display: none;"
+    >
+
+        {% csrf_token %}
+
+        <input
+            type="hidden"
+            id="addressId"
+            name="address_id"
+            value="{{ selected_address.addressId|default:'' }}"
+        >
+
+    </form>
+
+
+    <!-- HEADER -->
+    <div class="payment-header">
+
+        <h1>
+            Payment
+        </h1>
+
+        <p><small>
+            Choose your preferred payment method and complete
+            your order securely.
+        </small></p>
+
+    </div>
+
+
+    <!-- PAYMENT METHODS -->
+    <section class="payment-section">
+
+        <h2><small>
+            Select Payment Method
+        </small></h2>
+
+
+        <!-- UPI -->
+        <div
+            class="payment-option"
+            data-payment="upi"
+        >
+
+            <div class="payment-option-top">
+
+                <div class="payment-option-left">
+
+                    <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="upi"
+                    >
+
+                    <div class="payment-option-content">
+
+                        <h3>
+                            UPI
+                        </h3>
+
+                        <p>
+                            Pay easily using your UPI app
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="payment-icon">
+                    UPI
+                </div>
+
+            </div>
+
+
+            <div
+                class="payment-action"
+                id="upiAction"
+            >
+
+                <button
+                    type="button"
+                    id="upiPayButton"
+                    class="payment-button"
+                >
+
+                    Pay ₹{{ grand_total|floatformat:0 }}
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- CASH ON DELIVERY -->
+        <div
+            class="payment-option"
+            data-payment="cod"
+        >
+
+            <div class="payment-option-top">
+
+                <div class="payment-option-left">
+
+                    <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="cod"
+                    >
+
+                    <div class="payment-option-content">
+
+                        <h3>
+                            Cash on Delivery
+                        </h3>
+
+                        <p>
+                            Pay when your order is delivered
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="payment-icon cod-icon">
+                    COD
+                </div>
+
+            </div>
+
+
+            <div
+                class="payment-action"
+                id="codAction"
+            >
+
+                <button
+                    type="button"
+                    id="codPlaceOrderButton"
+                    class="payment-button"
+                >
+
+                    Place Order ₹{{ grand_total|floatformat:0 }}
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TOTAL AMOUNT -->
+    <section class="payment-total-section">
+
+        <div class="payment-total-row">
+
+            <span>
+                Total Amount
+            </span>
+
+            <strong>
+                ₹{{ grand_total|floatformat:0 }}
+            </strong>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{% static 'main/js/payment.js' %}?v=20"
+></script>
+
+{% endblock %}

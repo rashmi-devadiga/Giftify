@@ -1,0 +1,254 @@
+{% extends 'admin_panel/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Products | Giftify Admin
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin_panel/css/product.css' %}?v=17">
+{% endblock %}
+
+{% block content %}
+
+<div class="products-page">
+
+    <div class="products-header">
+
+        <div>
+            <h1>Products</h1>
+            <p>Manage the products available for your Giftify hampers.</p>
+        </div>
+
+        <a href="{% url 'admin_panel:add_product' %}" class="add-product-btn">
+        <span>+</span>
+        Add Product
+        </a>
+
+    </div>
+
+    <!-- Search & Filter -->
+    <div class="products-toolbar">
+
+        <div class="search-box">
+            <span class="search-icon">⌕</span>
+            <input
+                type="text"
+                id="productSearch"
+                placeholder="Search products..."
+                autocomplete="off"
+            >
+        </div>
+
+        <div class="filter-wrapper">
+
+            <button type="button" id="filterButton" class="filter-btn">
+                Filter
+                <span class="filter-arrow"></span>
+            </button>
+
+            <div id="filterMenu" class="filter-menu">
+
+                <button type="button" data-sort="az">
+                    A - Z
+                </button>
+
+                <button type="button" data-sort="price-low">
+                    Price: Low - High
+                </button>
+
+                <button type="button" data-sort="price-high">
+                    Price: High - Low
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Product Count -->
+    <div class="products-info">
+        <span id="productCount">
+            {% if products %}
+                {{ products|length }} products
+            {% else %}
+                0 products
+            {% endif %}
+        </span>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="products-grid" id="productsGrid">
+
+        {% if products %}
+
+            {% for product in products %}
+
+            <div
+                class="product-card"
+                data-name="{{ product.name|lower }}"
+                data-price="{{ product.price }}"
+                data-category="{{ product.category|lower }}"
+            >
+
+                <div class="product-image">
+
+                    {% if product.image %}
+                        <img
+                            src="{{ product.image }}"
+                            alt="{{ product.name }}"
+                        >
+                    {% else %}
+                        <div class="no-image">
+                            🛍️
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="product-details">
+
+                    <div class="product-category">
+                        Product
+                    </div>
+
+
+                    <h3>{{ product.name }}</h3>
+
+                    {% if product.description %}
+                        <p class="product-description">
+                            {{ product.description|truncatechars:80 }}
+                        </p>
+                    {% endif %}
+
+                    <div class="product-bottom">
+
+                        <span class="product-price">
+                            ₹{{ product.price }}
+                        </span>
+
+                        <span class="product-stock">
+                            Stock: {{ product.stock }}
+                        </span>
+
+                    </div>
+
+                    <div class="product-actions">
+
+                        <a
+                            href="{% url 'admin_panel:edit_product' product.id %}"
+                            class="edit-product-btn"
+                        >
+                            Edit
+                        </a>
+
+                        <button
+                            type="button"
+                            class="delete-product-btn"
+                            data-product-id="{{ product.id }}"
+                            data-product-name="{{ product.name }}"
+                            data-delete-url="{% url 'admin_panel:delete_product' product.id %}"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <!-- Empty -->
+            <div class="empty-products">
+
+                <div class="empty-product-icon">
+                    🛍️
+                </div>
+
+                <h2>No products added yet</h2>
+
+                <p>
+                    Start building your Giftify collection by adding
+                    your first product.
+                </p>
+
+                <a href="{% url 'admin_panel:add_product' %}" class="empty-add-btn">
+                + Add Product
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- No Search Results -->
+    <div id="noSearchResults" class="no-search-results" style="display: none;">
+
+        <div>⌕</div>
+
+        <h3>No products found</h3>
+
+        <p>Try searching with a different product name.</p>
+
+    </div>
+
+</div>
+
+<!-- Delete Product modal -->
+<div id="deleteModal" class="delete-modal">
+
+    <div class="delete-modal-content">
+
+        <h2>Delete Product?</h2>
+
+        <p>
+            Are you sure you want to delete
+            <strong id="deleteProductName"></strong>?
+            <br>
+            Are you sure you want to continue?
+        </p>
+
+        <form
+            id="deleteForm"
+            method="POST"
+        >
+
+            {% csrf_token %}
+
+            <div class="delete-modal-actions">
+
+                <button
+                    type="button"
+                    id="cancelDelete"
+                    class="cancel-delete-btn"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="confirm-delete-btn"
+                >
+                    Delete
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'admin_panel/js/product.js' %}?v=11"></script>
+{% endblock %}

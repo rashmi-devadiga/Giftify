@@ -1,0 +1,523 @@
+{% extends 'admin_panel/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Dashboard | Giftify Admin
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin_panel/css/dashboard.css' %}?v=12">
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-page">
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <h1>
+                Dashboard
+            </h1>
+
+            <p>
+                Welcome back! Here's what's happening with your Giftify store.
+            </p>
+
+        </div>
+
+        <div class="dashboard-date">
+
+            <span id="currentDate"></span>
+
+        </div>
+
+    </div>
+
+
+    <!-- Cards -->
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <img src="{% static 'admin_panel/images/totalg.png' %}" alt="Gifts">
+            </div>
+
+            <div class="stat-info">
+
+                <p>
+                    Total Gifts
+                </p>
+
+                <h2>
+                    {{ total_gifts|default:"0" }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <img src="{% static 'admin_panel/images/totalp.png' %}" alt="Shopping Bag">
+            </div>
+
+            <div class="stat-info">
+
+                <p>
+                    Total Products
+                </p>
+
+                <h2>
+                    {{ total_products|default:"0" }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <img src="{% static 'admin_panel/images/totalo.png' %}" alt="Shopping Bag">
+            </div>
+
+            <div class="stat-info">
+
+                <p>
+                    Total Orders
+                </p>
+
+                <h2>
+                    {{ total_orders|default:"0" }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <img src="{% static 'admin_panel/images/totals.png' %}" alt="Shopping Bag">
+            </div>
+
+            <div class="stat-info">
+
+                <p>
+                    Total Sales
+                </p>
+
+                <h2>
+                    ₹{{ total_sales|default:"0" }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+        <!-- Recent Orders -->
+        <div class="dashboard-card recent-orders">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Recent Orders
+                    </h3>
+
+                    <p>
+                        Latest customer orders
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{% url 'admin_panel:orders' %}"
+                    class="view-all"
+                >
+                    View All
+                </a>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Order
+                            </th>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% if recent_orders %}
+
+                            {% for order in recent_orders %}
+
+                            <tr>
+
+                                <td>
+                                    #{{ order.id }}
+                                </td>
+
+
+                                <td>
+                                    {{ order.address.name }}
+                                </td>
+
+
+                                <td>
+                                    ₹{{ order.amount }}
+                                </td>
+
+
+                                <td>
+
+                                    <span
+                                        class="status status-{{ order.status|lower }}"
+                                    >
+                                        {{ order.status }}
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <tr>
+
+                                <td
+                                    colspan="4"
+                                    class="empty-state"
+                                >
+
+                                    <div class="empty-icon">
+                                        📦
+                                    </div>
+
+                                    <h4>
+                                        No orders yet
+                                    </h4>
+
+                                    <p>
+                                        Customer orders will appear here.
+                                    </p>
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- Quick Actions -->
+        <div class="dashboard-card quick-actions">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Quick Actions
+                    </h3>
+
+                    <p>
+                        Manage your store
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="action-list">
+
+
+                <a
+                    href="{% url 'admin_panel:product' %}"
+                    class="action-item"
+                >
+
+                    <div class="action-icon">
+                        <img src="{% static 'admin_panel/images/totalp.png' %}" alt="Shopping Bag">
+                    </div>
+
+                    <div class="action-content">
+
+                        <h4>
+                            Manage Products
+                        </h4>
+
+                        <p>
+                            Add, edit or remove products
+                        </p>
+
+                    </div>
+
+                    <span class="action-arrow">
+                        >
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{% url 'admin_panel:gift_hamper' %}"
+                    class="action-item"
+                >
+
+                    <div class="action-icon">
+                        <img src="{% static 'admin_panel/images/totalg.png' %}" alt="Shopping Bag">
+                    </div>
+
+                    <div class="action-content">
+
+                        <h4>
+                            Manage Gifts
+                        </h4>
+
+                        <p>
+                            Create and manage gift hampers
+                        </p>
+
+                    </div>
+
+                    <span class="action-arrow">
+                        >
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{% url 'admin_panel:orders' %}"
+                    class="action-item"
+                >
+
+                    <div class="action-icon">
+                        <img src="{% static 'admin_panel/images/totalo.png' %}" alt="Shopping Bag">
+                    </div>
+
+                    <div class="action-content">
+
+                        <h4>
+                            View Orders
+                        </h4>
+
+                        <p>
+                            Check customer orders
+                        </p>
+
+                    </div>
+
+                    <span class="action-arrow">
+                        >
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{% url 'admin_panel:inventory' %}"
+                    class="action-item"
+                >
+
+                    <div class="action-icon">
+                        <img src="{% static 'admin_panel/images/stocks.png' %}" alt="Shopping Bag">
+                    </div>
+
+                    <div class="action-content">
+
+                        <h4>
+                            Check Stocks
+                        </h4>
+
+                        <p>
+                            Monitor product inventory
+                        </p>
+
+                    </div>
+
+                    <span class="action-arrow">
+                        >
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Overview -->
+    <div class="dashboard-card overview-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    Store Overview
+                </h3>
+
+                <p>
+                    Current Giftify store status
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="overview-grid">
+
+
+            <div class="overview-item">
+
+                <span class="overview-icon">
+                    <img src="{% static 'admin_panel/images/totalp.png' %}" alt="Shopping Bag">
+                </span>
+
+                <div>
+
+                    <span class="overview-label">
+                        Products
+                    </span>
+
+                    <strong>
+                        {{ total_products|default:"0" }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="overview-item">
+
+                <span class="overview-icon">
+                    <img src="{% static 'admin_panel/images/totalg.png' %}" alt="Shopping Bag">
+                </span>
+
+                <div>
+
+                    <span class="overview-label">
+                        Gifts
+                    </span>
+
+                    <strong>
+                        {{ total_gifts|default:"0" }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="overview-item">
+
+                <span class="overview-icon">
+                    <img src="{% static 'admin_panel/images/totalo.png' %}" alt="Shopping Bag">
+                </span>
+
+                <div>
+
+                    <span class="overview-label">
+                        Orders
+                    </span>
+
+                    <strong>
+                        {{ total_orders|default:"0" }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="overview-item">
+
+                <span class="overview-icon">
+                    <img src="{% static 'admin_panel/images/totals.png' %}" alt="Shopping Bag">
+                </span>
+
+                <div>
+
+                    <span class="overview-label">
+                        Sales
+                    </span>
+
+                    <strong>
+                        ₹{{ total_sales|default:"0" }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="{% static 'admin_panel/js/dashboard.js' %}"></script>
+
+{% endblock %}

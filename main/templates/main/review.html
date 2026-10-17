@@ -1,0 +1,1140 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Review Your Order | Giftify
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet" href="{% static 'main/css/review.css' %}?v=31">
+
+<style>
+
+/* ORDER SUMMARY - FULL WIDTH */
+.order-section {
+    width: 100%;
+}
+
+
+/* PRICE DETAILS - SEPARATE RIGHT CARD */
+.price-details-section {
+    width: 52%;
+    margin-left: auto;
+    margin-top: 35px;
+}
+
+
+.price-details-section .price-details-title {
+    margin: 0 0 20px;
+    font-size: 25px;
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.price-details-section .price-details {
+    background: #ffffff;
+    border: 1px solid #e9e2df;
+    border-radius: 22px;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+
+/* DELIVERY ADDRESS SELECTION */
+.address-selection-title {
+    margin: 0 0 18px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.address-selection-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+
+/* SAVED ADDRESS CARD */
+.select-address-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    width: 100%;
+    padding: 18px 20px;
+    background: #ffffff;
+    border: 1px solid #eadcdf;
+    border-radius: 16px;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    box-sizing: border-box;
+}
+
+
+.select-address-card:hover {
+    border-color: #d3a0a7;
+    box-shadow:
+        0 4px 14px
+        rgba(116, 70, 79, 0.06);
+}
+
+
+.select-address-card.selected {
+    border-color: #b97884;
+    background: #fffafa;
+    box-shadow:
+        0 5px 18px
+        rgba(177, 105, 117, 0.10);
+}
+
+
+/* RADIO */
+.select-address-radio {
+    flex-shrink: 0;
+    width: 19px;
+    height: 19px;
+    margin-top: 2px;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 2px solid #b97884;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+}
+
+
+/* SELECTED RADIO */
+.select-address-radio:checked {
+    border-color: #b97884;
+    background: #ffffff;
+}
+
+
+/* DUSTY ROSE INNER DOT */
+.select-address-radio:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #b97884;
+    transform: translate(-50%, -50%);
+}
+
+
+/* ADDRESS CONTENT */
+.select-address-content {
+    min-width: 0;
+    flex: 1;
+}
+
+
+.select-address-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 7px;
+}
+
+
+.select-address-type {
+    font-size: 15px;
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.select-address-name {
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333b4f;
+}
+
+
+.select-address-full {
+    margin-bottom: 7px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #6c7280;
+    word-break: break-word;
+}
+
+
+.select-address-mobile {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #6c7280;
+}
+
+
+/* EDIT / DELETE ACTIONS */
+.select-address-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 13px;
+}
+
+
+.edit-address-button,
+.delete-address-button {
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+.edit-address-button {
+    color: #a35f68;
+}
+
+
+.edit-address-button:hover {
+    color: #7d414a;
+}
+
+
+.delete-address-button {
+    color: #b34f5c;
+}
+
+
+.delete-address-button:hover {
+    color: #8f3946;
+}
+
+
+/* DEFAULT ADDRESS BADGE */
+.default-address-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 9px;
+    margin-left: 4px;
+    border-radius: 20px;
+    background: #f7edef;
+    color: #9a626d;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+
+/* ADD ADDRESS BUTTON */
+.add-address-button {
+    margin-top: 2px;
+}
+
+
+/* ADDRESS VALIDATION MESSAGE
+   BELOW CONTINUE TO PAYMENT BUTTON
+   FIXED SPACE - BUTTON DOES NOT MOVE
+*/
+.delivery-address-message {
+    visibility: hidden;
+    width: 100%;
+    height: 20px;
+    margin: 12px 0 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #b34f5c;
+    box-sizing: border-box;
+}
+
+
+.delivery-address-message.show {
+    visibility: visible;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+    .price-details-section {
+        width: 100%;
+    }
+
+
+    .select-address-card {
+        padding: 16px;
+    }
+
+
+    .select-address-actions {
+        gap: 15px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="review-page">
+
+
+    <!-- HEADER -->
+    <div class="review-header">
+
+        <h1>
+            Review Your Order
+        </h1>
+
+        <p>
+            Check your delivery details and order before payment.
+        </p>
+
+    </div>
+
+
+    <!-- DELIVERY ADDRESS -->
+    <section class="review-section">
+
+        <div class="section-title-row">
+
+            <h2>
+                Delivery Address
+            </h2>
+
+        </div>
+
+
+        <div
+            id="addressList"
+            class="address-list"
+        >
+
+            {% if addresses %}
+
+                <!-- ALL SAVED ADDRESSES -->
+                <div
+                    class="address-selection-list"
+                    id="addressSelectionList"
+                >
+
+                    {% for address in addresses %}
+
+                        <label
+                            class="select-address-card"
+
+                            data-address-id="{{ address.id }}"
+
+                            data-name="{{ address.name|default:'' }}"
+
+                            data-mobile="{{ address.mobile|default:'' }}"
+
+                            data-house="{{ address.house|default:'' }}"
+
+                            data-address="{{ address.address|default:'' }}"
+
+                            data-locality="{{ address.locality|default:'' }}"
+
+                            data-pincode="{{ address.pincode|default:'' }}"
+
+                            data-city="{{ address.city|default:'' }}"
+
+                            data-state="{{ address.state|default:'' }}"
+
+                            data-address-type="{{ address.address_type|default:'myself' }}"
+
+                            data-receiver-name="{{ address.receiver_name|default:'' }}"
+
+                            data-receiver-number="{{ address.receiver_number|default:'' }}"
+
+                            data-receiver-address="{{ address.receiver_address|default:'' }}"
+
+                            data-message="{{ address.message|default:'' }}"
+
+                            data-default="{% if address.default %}true{% else %}false{% endif %}"
+                        >
+
+                            <!-- SELECTION RADIO -->
+                            <input
+                                type="radio"
+                                name="deliveryAddress"
+                                value="{{ address.id }}"
+                                class="select-address-radio"
+                            >
+
+
+                            <!-- ADDRESS CONTENT -->
+                            <div class="select-address-content">
+
+                                <!-- ADDRESS TYPE -->
+                                <div class="select-address-top">
+
+                                    <span class="select-address-type">
+
+                                        {% if address.address_type == "office" %}
+
+                                            Work
+
+                                        {% elif address.address_type == "someone_else" %}
+
+                                            Someone Else
+
+                                        {% else %}
+
+                                            Myself
+
+                                        {% endif %}
+
+                                    </span>
+
+
+                                    {% if address.default %}
+
+                                        <span class="default-address-badge">
+                                            Default
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <!-- NAME -->
+                                <div class="select-address-name">
+
+                                    {{ address.name }}
+
+                                </div>
+
+
+                                <!-- FULL ADDRESS -->
+                                <div class="select-address-full">
+
+                                    {{ address.house }},
+
+                                    {{ address.address }},
+
+                                    {{ address.locality }},
+
+                                    {{ address.city }},
+
+                                    {{ address.state }}
+
+                                    – {{ address.pincode }}
+
+                                </div>
+
+
+                                <!-- MOBILE -->
+                                <div class="select-address-mobile">
+
+                                    Mobile: {{ address.mobile }}
+
+                                </div>
+
+
+                                <!-- EDIT / DELETE -->
+                                <div class="select-address-actions">
+
+                                    <button
+                                        type="button"
+                                        class="edit-address-button"
+                                        data-address-id="{{ address.id }}"
+                                    >
+                                        Edit
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="delete-address-button"
+                                        data-address-id="{{ address.id }}"
+                                    >
+                                        Delete
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </label>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ADD NEW ADDRESS -->
+        <button
+            type="button"
+            id="openAddressDrawer"
+            class="add-address-button"
+        >
+
+            + Add New Address
+
+        </button>
+
+    </section>
+
+
+    <!-- ORDER SUMMARY -->
+    <section class="review-section order-section">
+
+        <h2>
+            Order Summary
+        </h2>
+
+
+        {% for order in orders %}
+
+            <div class="order-hamper">
+
+
+                <!-- IMAGE -->
+                <div class="order-hamper-image">
+
+                    {% if order.image %}
+
+                        <img
+                            src="{{ order.image }}"
+                            alt="{{ order.name }}"
+                        >
+
+                    {% else %}
+
+                        <div class="order-no-image">
+                            🎁
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- DETAILS -->
+                <div class="order-hamper-details">
+
+                    <div class="order-hamper-title-row">
+
+                        <h3>
+                            {{ order.name }}
+                        </h3>
+
+                        <span class="order-hamper-price">
+
+                            ₹{{ order.selling_price|floatformat:0 }}
+
+                        </span>
+
+                    </div>
+
+
+                    {% if order.customized %}
+
+                        <span class="customized-label">
+
+                            Customized Gift Hamper
+
+                        </span>
+
+                    {% endif %}
+
+
+                    <div class="included-products">
+
+                        <h4>
+                            Included Products
+                        </h4>
+
+
+                        {% if order.items %}
+
+                            {% for item in order.items %}
+
+                                <div class="order-item">
+
+                                    <span class="order-item-name">
+
+                                        {{ item.name }}
+
+                                    </span>
+
+
+                                    <span class="order-item-quantity">
+
+                                        × {{ item.quantity }}
+
+                                    </span>
+
+
+                                    <span class="order-item-price">
+
+                                        ₹{{ item.price|floatformat:0 }}
+
+                                    </span>
+
+                                </div>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <p>
+                                No additional products.
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </section>
+
+
+    <!-- PRICE DETAILS -->
+    <section class="price-details">
+
+        <h2 class="price-details-title">
+
+            Price Details
+
+        </h2>
+
+
+        <!-- TOTAL PRICE -->
+        <div class="price-row-review">
+
+            <span>
+                Total Price
+            </span>
+
+            <span>
+                ₹{{ total_price|floatformat:0 }}
+            </span>
+
+        </div>
+
+
+        <!-- DISCOUNT -->
+        {% if total_discount %}
+
+            <div class="price-row-review">
+
+                <span>
+                    Discount
+                </span>
+
+                <span class="discount-value">
+
+                    − ₹{{ total_discount|floatformat:0 }}
+
+                </span>
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- DELIVERY -->
+        <div class="price-row-review">
+
+            <span>
+                Delivery Charge
+            </span>
+
+            <span>
+
+                + ₹{{ total_delivery|floatformat:0 }}
+
+            </span>
+
+        </div>
+
+
+
+        <!-- TOTAL -->
+        <div class="price-total-row">
+
+            <span>
+                Total
+            </span>
+
+            <strong>
+
+                ₹{{ grand_total|floatformat:0 }}
+
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTINUE TO PAYMENT -->
+    <div class="payment-button-area">
+
+        <button
+            type="button"
+            id="continuePaymentButton"
+            class="continue-payment-button"
+        >
+
+            Continue to Payment
+
+        </button>
+
+
+        <p
+            id="deliveryAddressMessage"
+            class="delivery-address-message"
+        ></p>
+
+    </div>
+
+</div>
+
+
+<!-- ADDRESS DRAWER -->
+<div
+    id="addressDrawerOverlay"
+    class="address-drawer-overlay"
+></div>
+
+
+<aside
+    id="addressDrawer"
+    class="address-drawer"
+>
+
+
+    <div class="drawer-header">
+
+        <h2 id="addressDrawerTitle">
+
+            Add New Address
+
+        </h2>
+
+
+
+        <button
+            type="button"
+            id="closeAddressDrawer"
+            class="close-drawer-button"
+        >
+
+            ×
+
+        </button>
+
+    </div>
+
+
+    <form
+        id="addressForm"
+        class="address-form"
+    >
+
+
+        <input
+            type="hidden"
+            id="addressId"
+            value=""
+        >
+
+
+        <!-- NAME + MOBILE -->
+        <div class="form-row">
+
+
+            <div class="form-group">
+
+                <label>
+                    Name
+                </label>
+
+
+                <input
+                    type="text"
+                    id="addressName"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Mobile Number
+                </label>
+
+
+                <input
+                    type="tel"
+                    id="addressMobile"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- HOUSE -->
+        <div class="form-group">
+
+            <label>
+
+                House Number / Tower / Block
+
+            </label>
+
+
+            <input
+                type="text"
+                id="addressHouse"
+                required
+            >
+
+        </div>
+
+
+        <!-- ADDRESS -->
+        <div class="form-group">
+
+            <label>
+
+                Address
+
+                <span>
+                    (Locality, Building, Street)
+                </span>
+
+            </label>
+
+
+            <textarea
+                id="addressAddress"
+                rows="2"
+                required
+            ></textarea>
+
+        </div>
+
+
+        <!-- LOCALITY + PINCODE -->
+        <div class="form-row">
+
+
+            <div class="form-group">
+
+                <label>
+                    Locality
+                </label>
+
+
+                <input
+                    type="text"
+                    id="addressLocality"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Pincode
+                </label>
+
+
+                <input
+                    type="text"
+                    id="addressPincode"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- CITY + STATE -->
+        <div class="form-row">
+
+
+            <div class="form-group">
+
+                <label>
+                    City / District
+                </label>
+
+
+                <input
+                    type="text"
+                    id="addressCity"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    State
+                </label>
+
+
+                <input
+                    type="text"
+                    id="addressState"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- ADDRESS TYPE -->
+        <div class="form-group">
+
+            <label>
+                Address Type
+            </label>
+
+
+            <div class="address-type-options">
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="addressType"
+                        value="myself"
+                        checked
+                    >
+
+                    Myself
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="addressType"
+                        value="office"
+                    >
+
+                    Office
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="addressType"
+                        value="someone_else"
+                    >
+
+                    Someone Else
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- SOMEONE ELSE -->
+        <div
+            id="receiverFields"
+            class="receiver-fields"
+        >
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Receiver Name
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="receiverName"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Receiver Number
+                    </label>
+
+
+                    <input
+                        type="tel"
+                        id="receiverNumber"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Receiver Address
+                </label>
+
+
+                <textarea
+                    id="receiverAddress"
+                    rows="2"
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Message
+                </label>
+
+
+                <textarea
+                    id="receiverMessage"
+                    rows="2"
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- DEFAULT -->
+        <label class="default-checkbox">
+
+
+            <input
+                type="checkbox"
+                id="makeDefault"
+            >
+
+
+            Make this my default address
+
+        </label>
+
+
+        <p
+            id="addressMessage"
+            class="address-message"
+        ></p>
+
+
+        <button
+            type="submit"
+            class="save-address-button"
+        >
+
+            Save Address
+
+        </button>
+
+    </form>
+
+</aside>
+
+
+<!-- DELETE ADDRESS CONFIRMATION -->
+<div class="delete-confirm-overlay" id="deleteConfirmOverlay">
+
+    <div class="delete-confirm-box">
+
+        <h3>Delete Address</h3>
+
+        <p>
+            Are you sure you want to delete this saved address?
+        </p>
+
+        <div class="delete-confirm-actions">
+
+            <button
+                type="button"
+                class="delete-cancel-button"
+                id="deleteCancelButton">
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="delete-confirm-button"
+                id="deleteConfirmButton">
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{% static 'main/js/review.js' %}?v=28"
+></script>
+
+{% endblock %}

@@ -1,0 +1,317 @@
+{% load static %}
+
+
+<!-- PRODUCT DRAWER -->
+<div
+    class="product-drawer-overlay"
+    id="productDrawerOverlay"
+></div>
+
+
+<section
+    class="product-drawer"
+    id="productDrawer"
+>
+
+
+    <!-- HEADER -->
+    <div class="product-drawer-header">
+
+        <h2>Products</h2>
+
+        <div class="product-drawer-tools">
+
+
+            <!-- SEARCH -->
+            <div class="product-search">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    id="productSearch"
+                    placeholder="Search products..."
+                >
+
+            </div>
+
+
+            <!-- FILTER -->
+            <button
+                type="button"
+                class="product-tool-button"
+                id="productFilterButton"
+            >
+                Filter
+            </button>
+
+
+            <!-- BAG -->
+            <button
+                type="button"
+                class="product-tool-button bag-button"
+                id="productBagButton"
+            >
+                Bag
+
+                <span id="bagCount">
+                    0
+                </span>
+
+            </button>
+
+
+            <!-- CLOSE -->
+            <button
+                type="button"
+                class="product-close-button"
+                id="closeProductDrawer"
+            >
+                ×
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- BAG PANEL -->
+    <div
+        class="product-bag-panel"
+        id="productBagPanel"
+    >
+
+        <div class="product-bag-header">
+
+            <h3>Bag</h3>
+
+            <button
+                type="button"
+                class="product-bag-close"
+                id="closeProductBag"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="product-bag-items"
+            id="productBagItems"
+        >
+
+            <div class="product-bag-empty">
+                No products added
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FILTER AREA -->
+    <div
+        class="product-filter-area"
+        id="productFilterArea"
+    >
+
+        <button
+            type="button"
+            class="product-filter-option active"
+            data-filter="all"
+        >
+            All
+        </button>
+
+
+        <button
+            type="button"
+            class="product-filter-option"
+            data-filter="available"
+        >
+            Available
+        </button>
+
+
+        <button
+            type="button"
+            class="product-filter-option"
+            data-filter="out_of_stock"
+        >
+            Out of Stock
+        </button>
+
+
+        <button
+            type="button"
+            class="product-filter-option"
+            data-filter="low_price"
+        >
+            Low Price
+        </button>
+
+
+        <button
+            type="button"
+            class="product-filter-option"
+            data-filter="high_price"
+        >
+            High Price
+        </button>
+
+    </div>
+
+
+    <!-- PRODUCT CONTENT -->
+    <div class="product-drawer-content">
+
+        <div
+            class="product-grid"
+            id="productGrid"
+        >
+
+            {% for product in products %}
+
+                <div
+                    class="product-card"
+                    data-product-id="{{ product.id }}"
+                    data-name="{{ product.name }}"
+                    data-category="{{ product.category|lower }}"
+                    data-price="{{ product.price }}"
+                    data-availability="{{ product.availability }}"
+                    data-stock="{{ product.stock }}"
+                >
+
+                    <!-- IMAGE -->
+                    <div class="product-card-image">
+
+                        {% if product.image %}
+
+                            <img
+                                src="{{ product.image }}"
+                                alt="{{ product.name }}"
+                            >
+
+                        {% else %}
+
+                            <div class="product-no-image">
+                                🎁
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- DETAILS -->
+                    <div class="product-card-details">
+
+                        <h3>
+                            {{ product.name }}
+                        </h3>
+
+
+                        <div class="product-card-price">
+                            ₹{{ product.price }}
+                        </div>
+
+
+                        <!-- AVAILABLE -->
+                        {% if product.availability == "available" and product.stock > 0 %}
+
+                            <div class="product-available">
+                                ● Available
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="add-to-bag-button"
+                                data-product-id="{{ product.id }}"
+                                data-product-name="{{ product.name }}"
+                                data-product-price="{{ product.price }}"
+                                data-product-image="{{ product.image }}"
+                                data-product-stock="{{ product.stock }}"
+                            >
+                                Add to Bag
+                            </button>
+
+
+                        <!-- OUT OF STOCK -->
+                        {% else %}
+
+                            <div class="product-out-stock">
+                                ● Out of Stock
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="add-to-bag-button disabled"
+                                disabled
+                            >
+                                Out of Stock
+                            </button>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+            {% empty %}
+
+                <div class="product-empty">
+
+                    <div class="product-empty-icon">
+                        🎁
+                    </div>
+
+                    <h3>
+                        No products available
+                    </h3>
+
+                    <p>
+                        No products have been added yet.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- PAGINATION -->
+        <div class="product-pagination">
+
+            <button
+                type="button"
+                id="previousPage"
+                class="pagination-arrow"
+            >
+                &lt;
+            </button>
+
+
+            <div
+                id="paginationNumbers"
+                class="pagination-numbers"
+            ></div>
+
+
+            <button
+                type="button"
+                id="nextPage"
+                class="pagination-arrow"
+            >
+                &gt;
+            </button>
+
+        </div>
+
+    </div>
+
+</section>

@@ -1,0 +1,763 @@
+{% extends 'admin_panel/layout.html' %}
+{% load static %}
+
+{% block title %}
+    GiftHamper | Giftify Admin
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet"  href="{% static 'admin_panel/css/add_gift_hamper.css' %}?v=13">
+{% endblock %}
+
+{% block content %}
+
+<div class="add-hamper-page">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Add Gift Hamper</h1>
+            <p>Create a new ready-made gift hamper for your customers.</p>
+        </div>
+
+    </div>
+
+    <form id="hamperForm"
+          method="POST"
+          enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+
+        <!-- G H Details -->
+        <div class="form-card">
+
+            <div class="section-header">
+
+                <div class="section-number">01</div>
+
+                <div>
+                    <h2>Gift Hamper Details</h2>
+                    <p>Enter the basic information about your hamper.</p>
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <!-- Hamper Name -->
+                <div class="form-group full-width">
+
+                    <label>
+                        Gift Hamper Name
+                        <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        name="hamper_name"
+                        id="hamperName"
+                        placeholder="Example: Birthday Special Hamper"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Category -->
+                <div class="form-group">
+
+                    <label>
+                        Category
+                        <span>*</span>
+                    </label>
+
+
+                    <div class="category-list-box">
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Birthday"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Birthday</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Anniversary & Wedding"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Anniversary & Wedding</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Love & Valentine's"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Love & Valentine's</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Chocolate"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Chocolate</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Flower"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Flower</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Gourmet & Sweet"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Gourmet & Sweet</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Beauty & Wellness"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Beauty & Wellness</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Friendship"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Friendship</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Congratulations"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Congratulations</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Thank You"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Thank You</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Memory & Photo"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Memory & Photo</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Plants & Green"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Plants & Green</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Accessories & Fashion"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Accessories & Fashion</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Mini Gift"
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Mini Gift</span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Img -->
+                <div class="form-group">
+
+                    <label>
+                        Hamper Image
+                        <span>*</span>
+                    </label>
+
+                    <label class="image-upload">
+
+                        <input
+                            type="file"
+                            name="image"
+                            id="hamperImage"
+                            accept="image/*"
+                        >
+
+                        <span class="upload-icon">＋</span>
+
+                        <span>
+                            Choose hamper image
+                        </span>
+
+                    </label>
+
+                    <div
+                        id="imageName"
+                        class="image-name"
+                    ></div>
+
+                </div>
+
+
+                <!-- Desc -->
+                <div class="form-group full-width">
+
+                    <label>
+                        Description
+                        <span>*</span>
+                    </label>
+
+                    <textarea
+                        name="description"
+                        id="description"
+                        rows="4"
+                        placeholder="Describe what makes this hamper special..."
+                        required
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Items Included -->
+        <div class="form-card">
+
+            <div class="section-header">
+
+                <div class="section-number">02</div>
+
+                <div class="section-title-area">
+
+                    <div>
+                        <h2>Items Included</h2>
+                        <p>
+                            Add all products included in this hamper.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="addItemBtn"
+                        class="add-item-btn"
+                    >
+                        <span>+</span>
+                        Add Item
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Head -->
+            <div class="items-header">
+
+                <span>Item Name</span>
+                <span>Price (₹)</span>
+                <span>Quantity</span>
+                <span>Total (₹)</span>
+                <span></span>
+
+            </div>
+
+
+            <div id="itemsContainer">
+
+                <!-- First item automatically available -->
+                <div class="item-row">
+
+                    <div class="item-input">
+
+                        <input
+                            type="text"
+                            name="item_name[]"
+                            placeholder="Enter item name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="item-input">
+
+                        <input
+                            type="number"
+                            name="item_price[]"
+                            class="item-price"
+                            placeholder="0"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="item-input">
+
+                        <input
+                            type="number"
+                            name="item_quantity[]"
+                            class="item-quantity"
+                            value="1"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="item-total">
+
+                        ₹<span>0.00</span>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="remove-item"
+                        title="Remove item"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Summary -->
+            <div class="items-summary">
+
+                <span>
+                    Total Items:
+                    <strong id="totalItems">0</strong>
+                </span>
+
+                <span>
+                    Items Total:
+                    <strong>
+                        ₹<span id="itemsTotal">0.00</span>
+                    </strong>
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Pricing -->
+        <div class="form-card">
+
+            <div class="section-header">
+
+                <div class="section-number">03</div>
+
+                <div>
+                    <h2>Pricing</h2>
+                    <p>
+                        Set the selling price and delivery charges.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="pricing-box">
+
+
+                <!-- Selling Price -->
+                <div class="price-row">
+
+                    <div>
+                        <label>Selling Price</label>
+                        <small>
+                            Automatically calculated from item totals
+                        </small>
+                    </div>
+
+                    <div class="price-value">
+                        ₹<span id="sellingPrice">0.00</span>
+                    </div>
+
+                </div>
+
+
+                <!-- Offer / Discount -->
+                <div class="price-input-row">
+
+                    <div>
+
+                        <label>
+                            Offer / Discount
+                            <span class="optional">
+                                Optional
+                            </span>
+                        </label>
+
+                    </div>
+
+                    <div class="discount-input">
+
+                        <span>₹</span>
+
+                        <input
+                            type="number"
+                            id="discount"
+                            name="discount"
+                            value="0"
+                            min="0"
+                            step="0.01"
+                            placeholder="0"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Delivery Charge -->
+                <div class="price-input-row">
+
+                    <div>
+
+                        <label>
+                            Delivery Charge
+                        </label>
+
+                    </div>
+
+                    <div class="discount-input">
+
+                        <span>₹</span>
+
+                        <input
+                            type="number"
+                            id="deliveryCharge"
+                            name="delivery_charge"
+                            value="0"
+                            min="0"
+                            step="0.01"
+                            placeholder="0"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Final Price -->
+                <div class="final-price-row">
+
+                    <div>
+
+                        <span>Final Hamper Price</span>
+
+                        <small>
+                            Selling Price − Discount + Delivery
+                        </small>
+
+                    </div>
+
+                    <strong>
+                        ₹<span id="finalPrice">0.00</span>
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Stock & Availability -->
+        <div class="form-card">
+
+            <div class="section-header">
+
+                <div class="section-number">04</div>
+
+                <div>
+                    <h2>Stock & Availability</h2>
+                    <p>
+                        Manage the availability of this hamper.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="stock-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Stock Quantity
+                        <span>*</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        name="stock_quantity"
+                        id="stockQuantity"
+                        min="0"
+                        value="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Availability
+                    </label>
+
+                    <div class="availability-options">
+
+                        <label class="radio-option">
+
+                            <input
+                                type="radio"
+                                name="availability"
+                                value="available"
+                                checked
+                            >
+
+                            <span class="radio-custom"></span>
+
+                            <span>Available</span>
+
+                        </label>
+
+
+                        <label class="radio-option">
+
+                            <input
+                                type="radio"
+                                name="availability"
+                                value="out_of_stock"
+                            >
+
+                            <span class="radio-custom"></span>
+
+                            <span>Out of Stock</span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Y/N Customization -->
+                <div class="form-group full-width">
+
+                    <label>
+                        Allow Customization?
+                    </label>
+
+                    <div class="customization-options">
+
+                        <label class="choice-card">
+
+                            <input
+                                type="radio"
+                                name="customization"
+                                value="yes"
+                                checked
+                            >
+
+                            <div>
+                                <strong>Yes</strong>
+                                <small>
+                                    Customers can customize this hamper.
+                                </small>
+                            </div>
+
+                        </label>
+
+
+                        <label class="choice-card">
+
+                            <input
+                                type="radio"
+                                name="customization"
+                                value="no"
+                            >
+
+                            <div>
+                                <strong>No</strong>
+                                <small>
+                                    Sell the hamper as it is.
+                                </small>
+                            </div>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'admin_panel:gift_hamper' %}"
+                class="cancel-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="save-btn"
+            >
+                Save Gift Hamper
+            </button>
+
+        </div>
+
+
+    </form>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'admin_panel/js/add_gift_hamper.js' %}"></script>
+{% endblock %}

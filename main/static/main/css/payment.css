@@ -1,0 +1,390 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+
+.payment-page {
+
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 45px 55px 80px;
+
+    box-sizing: border-box;
+
+}
+
+
+.payment-header {
+    margin-bottom: 38px;
+}
+
+
+.payment-header h1 {
+    margin: 0 0 10px;
+
+    font-family: 'Playfair Display', serif;
+
+    font-size: 34px;
+
+    font-weight: 600;
+
+    letter-spacing: -0.5px;
+
+    color: #172033;
+}
+
+
+.payment-header p {
+
+    margin: 0;
+
+    font-size: 16px;
+
+    line-height: 1.6;
+
+    color: #77716e;
+
+}
+
+
+.payment-section {
+
+    width: 100%;
+
+}
+
+
+.payment-section > h2 {
+
+    margin: 0 0 20px;
+
+    font-size: 22px;
+
+    font-weight: 600;
+
+    color: #172033;
+
+}
+
+
+.payment-option {
+
+    width: 100%;
+
+    background: #ffffff;
+
+    border: 1px solid #e9e2df;
+
+    border-radius: 20px;
+
+    margin-bottom: 18px;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.payment-option.selected {
+
+    border-color: #b88982;
+
+    box-shadow:
+        0 8px 25px rgba(80, 60, 55, 0.08);
+
+}
+
+
+.payment-option-top {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 25px 28px;
+
+    cursor: pointer;
+
+}
+
+
+.payment-option-left {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+}
+
+
+.payment-option-left input {
+
+    width: 20px;
+
+    height: 20px;
+
+    margin: 0;
+
+    accent-color: #b47786;
+
+    cursor: pointer;
+
+}
+
+
+.payment-option-content h3 {
+
+    margin: 0 0 6px;
+
+    font-size: 19px;
+
+    font-weight: 600;
+
+    color: #28221f;
+
+}
+
+
+.payment-option-content p {
+
+    margin: 0;
+
+    font-size: 14px;
+
+    color: #817a77;
+
+}
+
+
+.payment-icon {
+
+    min-width: 55px;
+
+    height: 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0 10px;
+
+    border-radius: 8px;
+
+    background: #f5eeec;
+
+    color: #8d625b;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+
+}
+
+
+.cod-icon {
+
+    background: #f3f1ed;
+
+    color: #655d57;
+
+}
+
+
+.payment-action {
+
+    display: none;
+
+    padding: 0 28px 25px;
+
+}
+
+
+.payment-option.selected .payment-action {
+
+    display: block;
+
+}
+
+
+.payment-button {
+
+    width: 100%;
+
+    height: 52px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #b47786;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.payment-button:hover {
+
+    background: #a46777;
+
+}
+
+
+.payment-button:active {
+
+    transform: scale(0.99);
+
+}
+
+
+.payment-total-section {
+
+    width: 100%;
+
+    margin-top: 30px;
+
+    padding: 25px 28px;
+
+    background: #ffffff;
+
+    border: 1px solid #e9e2df;
+
+    border-radius: 18px;
+
+    box-sizing: border-box;
+
+}
+
+
+.payment-total-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+.payment-total-row span {
+
+    font-size: 17px;
+
+    color: #5e5753;
+
+}
+
+
+.payment-total-row strong {
+
+    font-size: 25px;
+
+    font-weight: 700;
+
+    color: #172033;
+
+}
+
+
+@media (max-width: 768px) {
+
+    .payment-page {
+
+        padding: 30px 20px 60px;
+
+    }
+
+
+    .payment-header h1 {
+
+        font-size: 29px;
+
+    }
+
+
+    .payment-option-top {
+
+        padding: 20px;
+
+    }
+
+
+    .payment-action {
+
+        padding: 0 20px 20px;
+
+    }
+
+
+    .payment-total-section {
+
+        padding: 22px 20px;
+
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .payment-option-top {
+
+        align-items: flex-start;
+
+    }
+
+
+    .payment-icon {
+
+        display: none;
+
+    }
+
+
+    .payment-option-left {
+
+        gap: 13px;
+
+    }
+
+
+    .payment-option-content h3 {
+
+        font-size: 17px;
+
+    }
+
+
+    .payment-total-row strong {
+
+        font-size: 22px;
+
+    }
+
+}

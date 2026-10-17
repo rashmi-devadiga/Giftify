@@ -1,0 +1,359 @@
+{% extends 'admin_panel/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Add Product | Giftify Admin
+{% endblock %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'admin_panel/css/add_product.css' %}?v=13">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="add-product-page">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Add New Product</h1>
+
+            <p>
+                Add a new gift product to your Giftify store.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'admin_panel:product' %}"
+            class="back-btn"
+        >
+            < Back to Products
+        </a>
+
+    </div>
+
+    <!-- P Form -->
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+        class="product-form"
+        id="productForm"
+    >
+
+        {% csrf_token %}
+
+        <!-- P Info -->
+        <div class="form-card">
+
+            <div class="card-title">
+
+                <h2>Product Information</h2>
+
+                <p>
+                    Enter the basic details of your product.
+                </p>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label for="product_name">
+                        Product Name <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="product_name"
+                        name="product_name"
+                        placeholder="Enter product name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Price -->
+                <div class="form-group">
+
+                    <label for="price">
+                        Price <span>*</span>
+                    </label>
+
+                    <div class="price-input">
+
+                        <span>₹</span>
+
+                        <input
+                            type="number"
+                            id="price"
+                            name="price"
+                            placeholder="0.00"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Qty -->
+                <div class="form-group">
+
+                    <label for="quantity">
+                        Quantity <span>*</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        placeholder="Enter quantity"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- P Img -->
+        <div class="form-card">
+
+            <div class="card-title">
+
+                <h2>Product Image</h2>
+
+                <p>
+                    Upload an image of your product.
+                </p>
+
+            </div>
+
+
+            <div class="image-upload">
+
+                <input
+                    type="file"
+                    id="product_image"
+                    name="product_image"
+                    accept="image/*"
+                    hidden
+                >
+
+                <label
+                    for="product_image"
+                    class="upload-box"
+                    id="uploadBox"
+                >
+
+                    <div class="upload-icon">
+                        <img src="{% static 'admin_panel/images/img.png' %}" alt="Upload Image">
+                    </div>
+
+                    <h3>
+                        Upload Product Image
+                    </h3>
+
+                    <p>
+                        Click to browse or drag and drop
+                    </p>
+
+                    <small>
+                        PNG, JPG or JPEG
+                    </small>
+
+                </label>
+
+
+                <div
+                    class="image-preview"
+                    id="imagePreview"
+                >
+
+                    <img
+                        id="previewImage"
+                        src=""
+                        alt="Product Preview"
+                    >
+
+                    <button
+                        type="button"
+                        id="removeImage"
+                        class="remove-image"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Desc -->
+        <div class="form-card">
+
+            <div class="card-title">
+
+                <h2>Description</h2>
+
+                <p>
+                    Provide details about your product.
+                </p>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="description">
+                    Product Description <span>*</span>
+                </label>
+
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="6"
+                    maxlength="1000"
+                    placeholder="Enter product description..."
+                    required
+                ></textarea>
+
+
+                <div class="character-count">
+
+                    <span id="charCount">
+                        0
+                    </span>/1000
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Availability -->
+        <div class="form-card">
+
+            <div class="card-title">
+
+                <h2>Availability</h2>
+
+                <p>
+                    Select the current availability of this product.
+                </p>
+
+            </div>
+
+
+            <div class="availability-options">
+
+                <!-- Avail -->
+                <label class="availability-option">
+
+                    <input
+                        type="radio"
+                        name="availability"
+                        value="available"
+                        checked
+                    >
+
+                    <span class="radio-custom"></span>
+
+
+                    <div>
+
+                        <strong>
+                            Available
+                        </strong>
+
+                        <small>
+                            Product is available for customers.
+                        </small>
+
+                    </div>
+
+                </label>
+
+
+                <!-- Out of Stock -->
+                <label class="availability-option">
+
+                    <input
+                        type="radio"
+                        name="availability"
+                        value="out_of_stock"
+                    >
+
+                    <span class="radio-custom"></span>
+
+
+                    <div>
+
+                        <strong>
+                            Out of Stock
+                        </strong>
+
+                        <small>
+                            Product is currently unavailable.
+                        </small>
+
+                    </div>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- Cancel & Add P -->
+        <div class="form-actions">
+
+            <a
+                href="{% url 'admin_panel:product' %}"
+                class="cancel-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="submit-btn"
+                id="submitBtn"
+            >
+
+                <span>
+                    ＋
+                </span>
+
+                Add Product
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="{% static 'admin_panel/js/add_product.js' %}"></script>
+
+{% endblock %}

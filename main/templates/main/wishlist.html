@@ -1,0 +1,230 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block title %}
+    My Wishlist | Giftify
+{% endblock %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'main/css/wishlist.css' %}?v=26">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="wishlist-page">
+
+
+    <!-- HEADER -->
+    <div class="wishlist-heading">
+
+        <h1>
+            My Wishlist
+        </h1>
+
+        <p>
+            Your favorite gifts saved in one place.
+        </p>
+
+    </div>
+
+
+    <!-- GUEST USER LOGIN REQUIRED INSIDE WISHLIST PAGE -->
+    {% if login_required %}
+
+        <div
+            class="wishlist-login-box"
+            id="wishlistLoginBox"
+        >
+
+
+            <!-- ICON -->
+            <div class="wishlist-login-icon">
+
+                <img
+                    src="{% static 'main/images/account/loginheart.png' %}"
+                    alt="Login to Wishlist"
+                >
+
+            </div><br>
+
+
+            <!-- HEADING -->
+            <h2>
+                Login to Continue Shopping
+            </h2>
+
+
+            <!-- MESSAGE -->
+            <p>
+
+                Please login to your Giftify account
+                to save and access your favorite gifts.
+
+            </p>
+
+
+            <!-- LOGIN BUTTON -->
+            <a
+                href="{% url 'main:login' %}"
+                class="wishlist-login-button"
+            >
+                Login
+            </a>
+
+
+            <!-- CONTINUE SHOPPING -->
+            <a
+                href="{% url 'main:home' %}"
+                class="wishlist-continue-button"
+            >
+                Continue Shopping
+            </a>
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- WISHLIST -->
+        {% if wishlist_items %}
+
+            <div
+                class="wishlist-grid"
+                id="wishlistGrid"
+            >
+
+                {% for item in wishlist_items %}
+
+                    <div
+                        class="wishlist-card"
+                        data-id="{{ item.id }}"
+                    >
+
+
+                        <!-- IMAGE -->
+                        <div class="wishlist-image">
+
+                            {% if item.image %}
+
+                                <img
+                                    src="{{ item.image }}"
+                                    alt="{{ item.name }}"
+                                >
+
+                            {% else %}
+
+                                <div class="no-wishlist-image">
+                                    🎁
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- REMOVE HEART -->
+                            <button
+                                type="button"
+                                class="wishlist-heart remove-wishlist"
+                                data-id="{{ item.id }}"
+                                aria-label="Remove from wishlist"
+                            >
+                                ♥
+                            </button>
+
+                        </div>
+
+
+                        <!-- DETAILS -->
+                        <div class="wishlist-details">
+
+                            <h3>
+                                {{ item.name }}
+                            </h3>
+
+
+                            {% if item.price %}
+
+                                <p class="wishlist-price">
+                                    ₹{{ item.price }}
+                                </p>
+
+                            {% endif %}
+
+
+                            <a
+                                href="{% url 'main:view_gift_hamper' item.id %}"
+                                class="view-hamper-button"
+                            >
+                                View Gift Hamper
+                            </a>
+
+
+                            <button
+                                type="button"
+                                class="remove-button remove-wishlist"
+                                data-id="{{ item.id }}"
+                            >
+                                Remove from Wishlist
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- EMPTY WISHLIST -->
+            <div
+                class="empty-wishlist"
+                id="emptyWishlist"
+            >
+
+                <div class="empty-heart">
+                    <img src="{% static 'main/images/account/emptyheart.png' %}" alt="Heart">
+                </div>
+
+                <h2>
+                    Your wishlist is empty
+                </h2>
+
+                <p>
+                    Save your favorite gifts here
+                    and find them easily later.
+                </p>
+
+
+                <a
+                    href="{% url 'main:gift_hamper' %}"
+                    class="browse-button"
+                >
+                    Browse Gift Hampers
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    {% endif %}
+
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{% static 'main/js/wishlist.js' %}?v=17"
+></script>
+
+{% endblock %}

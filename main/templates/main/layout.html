@@ -1,0 +1,470 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}Giftify{% endblock %}
+    </title>
+
+    <link
+        rel="preconnect" href="https://fonts.googleapis.com">
+
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Main Customer CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'main/css/layout.css' %}?v=32"
+    >
+
+
+    <!-- Login CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'main/css/login.css' %}?v=19"
+    >
+
+
+    {% block extra_css %}{% endblock %}
+
+</head>
+
+
+<body>
+
+
+<!-- TOP ANNOUNCEMENT -->
+<div class="announcement-bar">
+
+    <span>
+        ✦ Curated gifts made with love
+    </span>
+
+    <span class="announcement-divider">
+        |
+    </span>
+
+    <span>
+        Create. Customize. Celebrate.
+    </span>
+
+</div>
+
+
+
+<!-- CUSTOMER NAVIGATION -->
+<header class="main-navbar">
+
+    <div class="navbar-container">
+
+
+        <!-- MOBILE MENU -->
+        <button
+            type="button"
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            aria-label="Open menu"
+        >
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
+
+        <!-- LOGO -->
+        <a
+            href="#"
+            class="brand-logo"
+        >
+
+            <span class="brand-mark">
+
+                <span class="brand-mark-line"></span>
+
+                G
+
+            </span>
+
+
+            <span class="brand-text">
+
+                <span class="brand-name">
+                    Giftify
+                </span>
+
+                <span class="brand-tagline">
+                    Create · Customize · Celebrate
+                </span>
+
+            </span>
+
+        </a>
+
+
+        <!-- NAVIGATION -->
+        <nav
+            class="navbar-links"
+            id="navbarLinks"
+        >
+
+
+            <!-- HOME -->
+            <a
+                href="{% url 'main:home' %}"
+                class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+            >
+                Home
+            </a>
+
+
+            <!-- GIFT HAMPERS -->
+            <a
+                href="{% url 'main:gift_hamper' %}"
+                class="nav-link {% if request.resolver_match.url_name == 'gift_hamper' %}active{% endif %}"
+            >
+                Gift Hampers
+            </a>
+
+
+            <!-- CUSTOMIZE -->
+            <a
+                href="{% url 'main:customize' %}"
+                class="nav-link {% if request.resolver_match.url_name == 'customize' %}active{% endif %}"
+            >
+                Customize
+            </a>
+
+
+            <!-- GIFTIFY CHAT -->
+            <a
+                href="{% url 'main:giftify_chat' %}"
+                class="nav-link {% if request.resolver_match.url_name == 'giftify_chat' %}active{% endif %}"
+            >
+                Giftify Chat
+            </a>
+
+
+            <!-- MY ORDERS -->
+
+            <a
+                href="{% url 'main:my_orders' %}"
+                class="nav-link {% if request.resolver_match.url_name == 'my_orders' %}active{% endif %}"
+            >
+                My Orders
+            </a>
+
+
+        </nav>
+
+
+        <!-- RIGHT ACTIONS -->
+        <div class="navbar-actions">
+
+
+            <!-- Wishlist -->
+            <a
+                href="{% url 'main:wishlist' %}"
+                class="nav-action"
+                aria-label="Wishlist"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+
+                    <path
+                        d="M20.8 8.6c0-2.8-2.2-5-5-5-1.7 0-3.2.8-4.1 2.1C10.8 4.4 9.3 3.6 7.6 3.6c-2.8 0-5 2.2-5 5 0 5.3 9.1 10.5 9.1 10.5s9.1-5.2 9.1-10.5Z"
+                    />
+
+                </svg>
+
+            </a>
+
+
+            <!-- Cart -->
+            <a
+                href="{% url 'main:cart' %}"
+                class="nav-action cart-action"
+                aria-label="Cart"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+
+                    <path
+                        d="M3 4h2l2.1 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 7H6"
+                    />
+
+                    <circle
+                        cx="10"
+                        cy="19"
+                        r="1.2"
+                    />
+
+                    <circle
+                        cx="18"
+                        cy="19"
+                        r="1.2"
+                    />
+
+                </svg>
+
+            </a>
+
+
+            <!-- Account -->
+
+            <button
+                type="button"
+                class="account-btn"
+                id="accountPanelButton"
+                aria-label="Open account"
+                aria-expanded="false"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="3.5"
+                    />
+
+                    <path
+                        d="M5 20c.8-3.4 3.2-5 7-5s6.2 1.6 7 5"
+                    />
+
+                </svg>
+
+                <span>
+                    My Account
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- MOBILE MENU -->
+    <div
+        class="mobile-menu"
+        id="mobileMenu"
+    >
+
+        <a
+            href="{% url 'main:home' %}"
+            class="mobile-nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+        >
+            Home
+        </a>
+
+
+        <a
+            href="{% url 'main:gift_hamper' %}"
+            class="mobile-nav-link {% if request.resolver_match.url_name == 'gift_hamper' %}active{% endif %}"
+        >
+            Gift Hampers
+        </a>
+
+
+        <a
+            href="{% url 'main:customize' %}"
+            class="mobile-nav-link {% if request.resolver_match.url_name == 'customize' %}active{% endif %}"
+        >
+            Customize
+        </a>
+
+
+        <a
+            href="{% url 'main:giftify_chat' %}"
+            class="mobile-nav-link {% if request.resolver_match.url_name == 'giftify_chat' %}active{% endif %}"
+        >
+            Giftify Chat
+        </a>
+
+
+        <a
+            href="{% url 'main:my_orders' %}"
+            class="mobile-nav-link {% if request.resolver_match.url_name == 'my_orders' %}active{% endif %}"
+        >
+            My Orders
+        </a>
+
+
+        <a
+            href="{% url 'main:wishlist' %}"
+            class="mobile-nav-link"
+        >
+            ♡ Wishlist
+        </a>
+
+
+        <a
+            href="{% url 'main:logout' %}"
+            class="mobile-nav-link"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- ACCOUNT PANEL OVERLAY -->
+<div
+    class="account-panel-overlay"
+    id="accountPanelOverlay"
+></div>
+
+
+<!-- ACCOUNT RIGHT PANEL -->
+<aside
+    class="account-side-panel"
+    id="accountSidePanel"
+    aria-hidden="true"
+>
+
+    <!-- ACCOUNT PANEL HEADER -->
+    <div class="account-panel-header">
+
+        <div>
+
+            <span class="account-panel-eyebrow">
+                GIFTIFY
+            </span>
+
+            <h2 id="accountPanelTitle">
+                 My Account
+            </h2>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="account-panel-close"
+            id="accountPanelClose"
+            aria-label="Close account panel"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <!-- MY ACCOUNT CONTENT -->
+    <div class="account-panel-body">
+
+        <iframe
+            id="accountPanelFrame"
+            class="account-panel-frame"
+            data-url="{% url 'main:my_account' %}"
+            title="Giftify Account"
+        ></iframe>
+
+    </div>
+
+
+</aside>
+
+
+<!-- LOGIN BOTTOM PANEL OVERLAY -->
+<div
+    class="login-panel-overlay"
+    id="loginPanelOverlay"
+></div>
+
+
+<!-- LOGIN BOTTOM PANEL -->
+<aside
+    class="login-bottom-panel"
+    id="loginBottomPanel"
+    aria-hidden="true"
+>
+
+    <!-- HANDLE -->
+    <div class="login-panel-handle"></div>
+
+
+    <!-- CLOSE -->
+    <button
+        type="button"
+        class="login-panel-close"
+        id="loginPanelClose"
+        aria-label="Close login"
+    >
+        ×
+    </button>
+
+
+    <!-- CONTENT -->
+    <div
+        class="login-panel-content"
+        id="loginPanelContent"
+    ></div>
+
+</aside>
+
+
+
+<!-- PAGE CONTENT -->
+<main class="main-content">
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+<!-- MAIN CUSTOMER JS -->
+
+<script
+    src="{% static 'main/js/layout.js' %}?v=31"
+></script>
+
+
+<script
+    src="{% static 'main/js/wishlist.js' %}?v=20"
+></script>
+
+
+{% block extra_js %}{% endblock %}
+
+
+</body>
+
+</html>

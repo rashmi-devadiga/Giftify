@@ -1,0 +1,454 @@
+{% extends "main/layout.html" %}
+
+{% load static %}
+
+{% block title %}
+    Your Cart | Giftify
+{% endblock %}
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet" href="{% static 'main/css/cart.css' %}?v=26">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="cart-page">
+
+    <input
+        type="hidden"
+        id="csrfToken"
+        value="{{ csrf_token }}"
+    >
+
+    <div class="cart-heading">
+
+        <h1>
+            Your Cart
+        </h1>
+
+    </div>
+
+
+    <!-- USER NOT LOGGED IN LOGIN REQUIRED INSIDE CART PAGE -->
+    {% if login_required %}
+
+
+        <div
+            class="cart-login-box"
+            id="cartLoginBox"
+        >
+
+            <div class="cart-login-icon">
+
+                <img
+                    src="{% static 'main/images/account/logincart.png' %}"
+                    alt="Login to Cart"
+                >
+
+            </div><br>
+
+
+            <h2>
+                Login to View Your Cart
+            </h2>
+
+
+            <p>
+
+                Please login to your Giftify account
+                to view your saved items and continue
+                with your purchase.
+
+            </p>
+
+
+            <a
+                href="{% url 'main:login' %}"
+                class="cart-login-button"
+            >
+                Login
+            </a>
+
+
+            <a
+                href="{% url 'main:home' %}"
+                class="cart-continue-button"
+            >
+                Continue Shopping
+            </a>
+
+
+        </div>
+
+
+    {% else %}
+
+
+        {% if cart_items %}
+
+
+            <!-- CART ITEMS -->
+            <div class="cart-list">
+
+
+                {% for item in cart_items %}
+
+
+                    <div
+                        class="
+                            cart-item
+                            {% if item.is_out_of_stock %}
+                                cart-item-out-of-stock
+                            {% endif %}
+                        "
+                        data-cart-id="{{ item.cart_id }}"
+                    >
+
+
+                        <!-- IMAGE -->
+                        <div class="cart-item-image">
+
+                            {% if item.image %}
+
+                                <img
+                                    src="{{ item.image }}"
+                                    alt="{{ item.name }}"
+                                >
+
+                            {% else %}
+
+                                <div class="cart-no-image">
+                                    🎁
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- DETAILS -->
+                        <div class="cart-item-details">
+
+
+                            <div class="cart-item-top">
+
+                                <div>
+
+                                    <h2>
+                                        {{ item.name }}
+                                    </h2>
+
+
+                                    <!-- ITEM PRICE STILL DISPLAYED EVEN IF OUT OF STOCK -->
+                                    <div class="cart-selling-price">
+
+                                        ₹{{ item.selling_price|floatformat:0 }}
+
+
+                                        {% if item.discount_percent %}
+
+                                            <span>
+                                                {{ item.discount_percent|floatformat:0 }}% OFF
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <!-- STOCK STATUS -->
+                                    {% if item.is_out_of_stock %}
+
+                                        <div class="cart-stock-status cart-stock-out">
+
+                                            <span class="cart-stock-dot">
+                                                ●
+                                            </span>
+
+                                            Out of Stock
+
+                                        </div>
+
+                                    {% else %}
+
+                                        <div class="cart-stock-status cart-stock-available">
+
+                                            <span class="cart-stock-dot">
+                                                ●
+                                            </span>
+
+                                            Available
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+                                <!-- REMOVE -->
+                                <button
+                                    type="button"
+                                    class="cart-remove-button"
+                                    data-cart-id="{{ item.cart_id }}"
+                                >
+                                    ×
+                                </button>
+
+
+                            </div>
+
+
+                            <!-- INCLUDED PRODUCTS --> 
+                            {% if item.items %}
+
+                                <div class="cart-included-section">
+
+                                    <div class="cart-included-title">
+
+                                        Items Included
+
+                                    </div>
+
+
+                                    <div class="cart-included-items">
+
+
+                                        {% for product in item.items %}
+
+
+                                            <div class="cart-included-item">
+
+
+                                                <span class="cart-product-name">
+
+                                                    {{ product.name }}
+
+                                                </span>
+
+
+                                                <span class="cart-product-quantity">
+
+                                                    Qty: {{ product.quantity }}
+
+                                                </span>
+
+
+                                                <span class="cart-product-price">
+
+                                                    ₹{{ product.price|floatformat:0 }}
+
+                                                </span>
+
+
+                                            </div>
+
+
+                                        {% endfor %}
+
+
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+
+                        </div>
+
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+
+            <!-- PRICE DETAILS -->
+            <section class="cart-price-section">
+
+
+                <h2>
+                    Price Details
+                </h2>
+
+
+                <div class="cart-price-box">
+
+
+                    <!-- AVAILABLE ITEMS TOTAL ONLY -->
+                    <div class="price-line">
+
+                        <span>
+                            Total Price
+                        </span>
+
+                        <span>
+                            ₹{{ cart_total_price|floatformat:0 }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- AVAILABLE ITEMS DISCOUNT ONLY --> 
+                    {% if cart_discount %}
+
+                        <div class="price-line discount-line">
+
+                            <span>
+                                Discount
+                            </span>
+
+                            <span>
+                                - ₹{{ cart_discount|floatformat:0 }}
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- AVAILABLE ITEMS DELIVERY ONLY -->
+                    <div class="price-line">
+
+                        <span>
+                            Delivery Charge
+                        </span>
+
+                        <span>
+                            + ₹{{ cart_delivery|floatformat:0 }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="price-divider"></div>
+
+
+                    <!-- FINAL TOTAL -->
+                    <div class="cart-final-total">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong>
+                            ₹{{ cart_grand_total|floatformat:0 }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- CONTINUE -->
+                <div class="cart-bottom-actions">
+
+
+                    {% if has_available_items %}
+
+
+                        <!-- At least one item is available.
+                            Continue is enabled.
+
+                            Out-of-stock items remain in the cart,
+                            but only available items are sent to
+                            Review Your Order -->
+
+                        <a
+                            href="{% url 'main:review_order' %}?source=cart"
+                            class="continue-button"
+                        >
+                            Continue
+                        </a>
+
+
+                    {% else %}
+
+
+                        <!-- Only when ALL cart items are out of stock
+                            should checkout be disabled -->
+
+                        <button
+                            type="button"
+                            class="continue-button cart-checkout-disabled"
+                            disabled
+                        >
+                            No Available Items
+                        </button>
+
+
+                        <div class="cart-checkout-warning">
+
+                            All items in your cart are out of stock.
+                            Please wait until an item becomes available.
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </section>
+
+
+        {% else %}
+
+
+            <!-- EMPTY CART -->
+            <div class="empty-cart">
+
+                <div class="empty-cart-icon">
+                    <img
+                        src="{% static 'main/images/account/emptycart.png' %}"
+                        alt="Empty Cart"
+                    >
+                </div>
+
+                <h2>
+                    Your cart is empty
+                </h2>
+
+                <p>
+                    Add a beautiful gift hamper to your cart.
+                </p>
+
+                <a
+                    href="{% url 'main:gift_hamper' %}"
+                    class="continue-button"
+                >
+                    Continue Shopping
+                </a>
+
+            </div>
+
+
+        {% endif %}
+
+
+    {% endif %}
+
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{% static 'main/js/cart.js' %}?v=18"
+></script>
+
+{% endblock %}

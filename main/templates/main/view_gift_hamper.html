@@ -1,0 +1,429 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block title %}
+    {{ hamper.name }} | Giftify
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'main/css/view_gift_hamper.css' %}?v=31">
+    <link rel="stylesheet" href="{% static 'main/css/product.css' %}?v=27">
+{% endblock %}
+
+{% block content %}
+
+<div class="gift-hamper-page">
+
+
+    <!-- MAIN GIFT HAMPER SECTION -->
+    <section class="hamper-main">
+
+
+        <!-- LEFT : HAMPER IMAGE -->
+        <div class="hamper-image-section">
+
+            {% if hamper.image %}
+                <img
+                    src="{{ hamper.image }}"
+                    alt="{{ hamper.name }}"
+                    class="hamper-main-image"
+                >
+            {% else %}
+                <div class="no-hamper-image">
+                    🎁
+                </div>
+            {% endif %}
+
+
+            <!-- Wishlist -->
+            <button
+                type="button"
+                class="wishlist-button"
+                data-id="{{ hamper.id }}"
+                data-name="{{ hamper.name }}"
+                data-price="{{ hamper.selling_price }}"
+                data-image="{{ hamper.image }}"
+                aria-label="Add to wishlist"
+            >
+                ♡
+            </button>
+
+        </div>
+
+
+        <!-- RIGHT : HAMPER DETAILS -->
+        <div class="hamper-details">
+
+            <!-- Hamper Name -->
+            <h1 class="hamper-name">
+                {{ hamper.name }}
+            </h1>
+
+
+            <!-- Price + Offer -->
+            <div class="price-row">
+
+                {% if hamper.selling_price %}
+                    <span
+                        class="selling-price"
+                        id="hamper-total-price"
+                        data-original-price="{{ hamper.selling_price }}"
+                    >
+                        ₹{{ hamper.selling_price }}
+                    </span>
+                {% endif %}
+
+                {% if hamper.discount %}
+                    <span class="offer">
+                        {{ hamper.discount }}% OFF
+                    </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- Availability -->
+            <div class="availability">
+
+                {% if hamper.stock_quantity >= 5 %}
+
+                    <span class="available">
+                        ● Available
+                    </span>
+
+                {% elif hamper.stock_quantity > 0 %}
+
+                    <span class="available">
+                        ● {{ hamper.stock_quantity }} only left
+                    </span>
+
+                {% else %}
+
+                    <span class="out-of-stock">
+                        ● Out of Stock
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ADD TO CART + BUY NOW -->
+            <div class="action-buttons">
+
+                <button
+                    type="button"
+                    class="add-cart-button"
+
+                    data-hamper-id="{{ hamper.id }}"
+
+                    data-customization="{{ hamper.customization }}"
+
+                    data-login-url="{% url 'main:login' %}"
+
+                    {% if hamper.stock_quantity|default:0 <= 0 %}
+                        disabled
+                    {% endif %}
+                >
+                    Add to Cart
+                </button>
+
+
+                <input
+                    type="hidden"
+                    id="csrfToken"
+                    value="{{ csrf_token }}"
+                >
+
+
+                <button
+                    type="button"
+                    class="buy-now-button"
+
+                    data-login-url="{% url 'main:login' %}"
+
+                    {% if hamper.stock_quantity|default:0 <= 0 %}
+                        disabled
+                    {% endif %}
+                >
+                    Buy Now
+                </button>
+
+            </div>
+
+
+            <!-- CART / VALIDATION MESSAGES
+                 DISPLAY BELOW BOTH BUTTONS -->
+            <p
+                id="cartSuccessMessage"
+                class="cart-success-message"
+            ></p>
+
+
+            <p
+                id="cartValidationMessage"
+                class="cart-validation-message"
+            ></p>
+
+
+            <!-- CUSTOMIZATION / ADD PRODUCT -->
+            <div class="customization-area">
+
+                {% if hamper.customization == "yes" %}
+
+
+                    <!-- CUSTOMIZABLE HAMPER -->
+                    <h3 class="included-title">
+                        Items Included
+                    </h3>
+
+
+                    {% if hamper.items %}
+
+                        <div class="included-items" id="includedItems">
+
+                        {% for item in hamper.items %}
+
+                            <div
+                                class="included-item"
+                                data-product-id="{{ item.product_id }}"
+                                data-price="{{ item.item_price }}"
+                                data-quantity="{{ item.quantity }}"
+                                data-original-item="true"
+                            >
+
+
+                                <!-- ITEM NAME -->
+                                <div class="item-info">
+                                    <span class="item-name">
+                                        {{ item.item_name }}
+                                    </span>
+                                </div>
+
+
+                                <!-- QUANTITY -->
+                                <div class="quantity-control">
+
+                                    <button
+                                        type="button"
+                                        class="quantity-button minus"
+                                    >
+                                        −
+                                    </button>
+
+                                    <span class="item-quantity">
+                                        {{ item.quantity }}
+                                    </span>
+
+                                    <button
+                                        type="button"
+                                        class="quantity-button plus"
+                                    >
+                                        +
+                                    </button>
+
+                                </div>
+
+
+                                <!-- PRICE -->
+                                <span class="item-price">
+                                    ₹{{ item.item_price }}
+                                </span>
+
+
+                                <!-- REMOVE -->
+                                <button
+                                    type="button"
+                                    class="remove-item"
+                                >
+                                    X
+                                </button>
+
+                            </div>
+
+                        {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <p class="no-items">
+                            No products included yet.
+                        </p>
+
+                    {% endif %}
+
+
+                    <button
+                        type="button"
+                        class="add-product-button"
+                        id="openProductDrawer"
+                    >
+                        + Add Product
+                    </button>
+
+
+                {% else %}
+
+                    <!-- NON-CUSTOMIZABLE HAMPER -->
+                    <div class="add-more-title">
+                        Want to add more?
+                    </div>
+
+
+                    <div
+                        class="included-items"
+                        id="includedItems"
+                    >
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="add-product-button"
+                        id="openProductDrawer"
+                    >
+                        + Add Product
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HAMPER DESCRIPTION -->
+    <section class="description-section">
+
+        <h2>
+            Hamper Description
+        </h2>
+
+        <div class="description-box">
+
+            {% if hamper.description %}
+
+                <p>
+                    {{ hamper.description|linebreaksbr }}
+                </p>
+
+            {% else %}
+
+                <p class="empty-description">
+                    No description available.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- YOU MAY ALSO LIKE -->
+    <section class="also-like-section">
+
+        <div class="section-heading">
+
+            <h2>
+                You may also like
+            </h2>
+
+        </div>
+
+
+        {% if recommendations %}
+
+            <div class="recommendation-grid">
+
+                {% for item in recommendations %}
+
+                    <a
+                        href="{% url 'main:view_gift_hamper' item.id %}"
+                        class="recommendation-card"
+                    >
+
+                        <!-- Image -->
+                        <div class="recommendation-image">
+
+                            {% if item.image %}
+
+                                <img
+                                    src="{{ item.image }}"
+                                    alt="{{ item.name }}"
+                                >
+
+                            {% else %}
+
+                                <div class="recommendation-no-image">
+                                    🎁
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- Card Details -->
+                        <div class="recommendation-details">
+
+
+                            <h3>
+                                {{ item.name }}
+                            </h3>
+
+
+                            <div class="recommendation-price-row">
+
+                                {% if item.selling_price %}
+
+                                    <span class="recommendation-price">
+                                        ₹{{ item.selling_price }}
+                                    </span>
+
+                                {% endif %}
+
+                                {% if item.discount %}
+
+                                    <span class="recommendation-offer">
+                                        {{ item.discount }}% OFF
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p class="no-recommendations">
+                No other gift hampers available.
+            </p>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+{% include "main/product.html" %}
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="{% static 'main/js/view_gift_hamper.js' %}?v=24"></script>
+<script src="{% static 'main/js/product.js' %}?v=25"></script>
+
+{% endblock %}

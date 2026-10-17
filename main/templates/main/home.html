@@ -1,0 +1,486 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Giftify | Create. Customize. Celebrate.
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'main/css/home.css' %}?v=36">
+{% endblock %}
+
+
+{% block content %}
+
+<!-- MAIN PROMOTIONAL SLIDER -->
+
+<section class="hero-section">
+
+    <div class="hero-slider">
+
+        <!-- LEFT ARROW -->
+        <button class="slider-arrow left-arrow" id="prevBtn">
+            &#10094;
+        </button>
+
+
+        <!-- SLIDES -->
+        <div class="slides-container">
+
+
+            <!-- SLIDE 1 -->
+            <div class="hero-slide active-slide">
+
+                <img src="{% static 'main/images/home/b1.png' %}" 
+                    alt="Giftify Promotional Banner">
+                
+
+                <div class="hero-content">
+
+                    <h1>
+                        Awesome Gift
+                    </h1>
+
+                    <h2>
+                        For Your Loved Once
+                    </h2>
+
+                    <p>
+                        Make every occasion memorable with
+                        beautifully curated gifts.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SLIDE 2 -->
+            <div class="hero-slide">
+
+                <img src="{% static 'main/images/home/b2.png' %}" 
+                    alt="Special Gifts">
+
+                <div class="hero-content">
+
+                    <h1>
+                        Gifts Made With Love
+                    </h1>
+
+                    <h2>
+                        For Every Special Moment
+                    </h2>
+
+                    <p>
+                        Find something beautiful for someone special.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SLIDE 3 -->
+            <div class="hero-slide">
+
+                <img src="{% static 'main/images/home/customizebanner.png' %}" 
+                    alt="Special Gift Collection">
+
+                <div class="hero-content">
+
+                    <h1>
+                        Make Them Smile
+                    </h1>
+
+                    <h2>
+                        Perfect Gifts For Everyone
+                    </h2>
+
+                    <p>
+                        Discover thoughtful gifts for every occasion.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT ARROW -->
+        <button class="slider-arrow right-arrow" id="nextBtn">
+            &#10095;
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- GIFT HAMPER BANNERS -->
+<section class="chat-section">
+
+    <!-- LEFT — READY-MADE HAMPERS -->
+    <div class="chat-banner hamper-banner">
+
+        <img
+            src="{% static 'main/images/home/readymade.png' %}"
+            alt="Ready-Made Gift Hampers"
+        >
+
+        <div class="chat-content">
+
+            <h2>
+                Ready-Made<br>
+                Hampers
+            </h2>
+
+            <h3>Beautifully Gifted</h3>
+
+            <p>
+                Discover thoughtfully curated hampers,
+                beautifully packed and ready to make
+                every occasion special.
+            </p>
+
+            <a
+                href="{% url 'main:gift_hamper' %}"
+                class="chat-btn"
+            >
+                SHOP HAMPERS
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT — CUSTOMIZE HAMPERS -->
+    <div class="chat-banner hamper-banner">
+
+        <img
+            src="{% static 'main/images/home/customize.png' %}"
+            alt="Customize Gift Hampers"
+        >
+
+        <div class="chat-content">
+
+            <h2>
+                Customize<br>
+                Your Hamper
+            </h2>
+
+            <h3>Made Just for Them</h3>
+
+            <p>
+                Choose their favourite gifts and create
+                a personalized hamper that feels truly
+                special and meaningful.
+            </p>
+
+            <a
+                href="{% url 'main:customize' %}"
+                class="chat-btn"
+            >
+                CUSTOMIZE NOW
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- MOST POPULAR GIFTS -->
+<section class="popular-section">
+
+
+    <!-- HEADING -->
+    <div class="section-heading">
+
+        <div>
+            <h2>Most Popular Gifts</h2>
+
+            <p>
+                Discover our bestsellers loved by thousands.
+                Perfect for every occasion!
+            </p>
+        </div>
+
+        {% if hampers %}
+            <a
+                href="{% url 'main:gift_hamper' %}"
+                class="view-all-btn"
+            >
+                View All
+            </a>
+        {% endif %}
+
+    </div>
+
+
+    {% if hampers %}
+
+        <!-- HAMPER SLIDER -->
+        <div class="popular-slider">
+
+
+            <!-- LEFT ARROW -->
+            <button
+                type="button"
+                class="popular-arrow popular-prev"
+                id="popularPrev"
+            >
+                &#10094;
+            </button>
+
+
+            <!-- HAMPER CONTAINER -->
+            <div
+                class="popular-container"
+                id="popularContainer"
+            >
+
+                {% for hamper in hampers %}
+
+                    <a href="{% url 'main:view_gift_hamper' hamper.id %}" class="popular-card">
+
+
+                        <!-- IMAGE -->
+                        <div class="popular-image">
+
+                            {% if hamper.image %}
+
+                                <img
+                                    src="{{ hamper.image }}"
+                                    alt="{{ hamper.name }}"
+                                >
+
+                            {% else %}
+
+                                <div class="no-popular-image">
+                                    🎁
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- WISHLIST -->
+                                <button
+                                    type="button"
+                                    class="popular-wishlist"
+                                    data-id="{{ hamper.id }}"
+                                    data-name="{{ hamper.name }}"
+                                    data-price="{{ hamper.final_price }}"
+                                    data-image="{{ hamper.image }}"
+                                    aria-label="Add to wishlist"
+                                >
+                                    ♡
+                                </button>
+
+                        </div>
+
+
+                        <!-- DETAILS -->
+                        <div class="popular-details">
+
+                            <h3>
+                                {{ hamper.name }}
+                            </h3>
+
+                            {% if hamper.selling_price %}
+                                <div class="popular-price">
+                                    ₹{{ hamper.selling_price }}
+                                </div>
+                            {% endif %}
+
+                            {% if hamper.discount %}
+                                <span class="popular-discount">
+                                    {{ hamper.discount }}% OFF
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- RIGHT ARROW -->
+            <button
+                type="button"
+                class="popular-arrow popular-next"
+                id="popularNext"
+            >
+                &#10095;
+            </button>
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- EMPTY STATE -->
+        <div class="empty-products">
+
+            <p>
+                No gifts have been added yet.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+
+<!-- CUSTOMIZE BANNER -->
+<section class="customize-section">
+
+    <div class="customize-banner">
+
+        <img
+            src="{% static 'main/images/home/customizebanner.png' %}"
+            alt="Customize Your Gift"
+        >
+
+        <div class="customize-content">
+
+            <h2>
+                Create Your Own
+            </h2>
+
+            <h3>
+                Perfect Gift
+            </h3>
+
+            <p>
+                Choose your favorites, add personal touches
+                and make it truly special.
+            </p>
+
+            <a href="{% url 'main:customize' %}" class="customize-btn">
+                CUSTOMIZE NOW
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- WHY CHOOSE GIFTIFY -->
+<section class="why-giftify-section">
+
+    <div class="why-giftify-heading">
+
+        <span>WHY CHOOSE</span>
+
+        <div class="why-giftify-title-row">
+
+            <i></i>
+
+            <h2>Giftify</h2>
+
+            <i></i>
+
+        </div>
+
+    </div>
+
+
+    <div class="why-giftify-features">
+
+        <!-- 1 -->
+        <div class="why-giftify-item">
+
+            <div class="why-giftify-icon">
+                <img
+                    src="{% static 'main/images/account/premium.png' %}"
+                    alt="Premium Quality"
+                >
+            </div>
+
+            <h3>Premium Quality</h3>
+
+            <p>Only the best, always.</p>
+
+        </div>
+
+
+        <!-- 2 -->
+        <div class="why-giftify-item">
+
+            <div class="why-giftify-icon">
+                <img
+                    src="{% static 'main/images/account/heart.png' %}"
+                    alt="Thoughtful Curation"
+                >
+            </div>
+
+            <h3>Thoughtful Curation</h3>
+
+            <p>Gifts that speak from the heart.</p>
+
+        </div>
+
+
+        <!-- 3 -->
+        <div class="why-giftify-item">
+
+            <div class="why-giftify-icon">
+                <img
+                    src="{% static 'main/images/account/delivery.png' %}"
+                    alt="On-Time Delivery"
+                >
+            </div>
+
+            <h3>On-Time Delivery</h3>
+
+            <p>Because moments matter.</p>
+
+        </div>
+
+
+        <!-- 4 -->
+        <div class="why-giftify-item">
+
+            <div class="why-giftify-icon">
+                <img
+                    src="{% static 'main/images/account/safe.png' %}"
+                    alt="Safe &amp; Secure"
+                >
+            </div>
+
+            <h3>Safe &amp; Secure</h3>
+
+            <p>Shop with confidence.</p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="giftify-bottom-image">
+
+    <img
+        src="{% static 'main/images/home/bottombanner.png' %}"
+        alt="Giftify"
+    >
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'main/js/home.js' %}?v=17"></script>
+{% endblock %}

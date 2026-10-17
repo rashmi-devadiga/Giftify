@@ -1,0 +1,145 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Order Confirmed | Giftify
+{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet" href="{% static 'main/css/confirmed.css' %}?v=12">
+{% endblock %}
+
+{% block content %}
+
+<div class="confirmed-page">
+
+    <!-- CONFIRMATION -->
+    <div class="confirmed-card">
+
+        <div class="gift-icon">
+            <img
+                src="{% static 'main/images/gift.gif' %}"
+                alt="Gift"
+            >
+        </div>
+
+        <h1>
+            Order Confirmed!
+        </h1>
+
+
+        <p class="thank-you">
+            Thank you for your order!
+        </p>
+
+        <p class="preparing-message">
+            Your gift is being prepared with care.
+        </p>
+
+
+        <!-- ORDER DETAILS -->
+        <div class="order-details">
+
+            <div class="order-detail-row">
+
+                <span>
+                    Order ID
+                </span>
+
+                <strong>
+                    #{{ order_id }}
+                </strong>
+
+            </div>
+
+
+            <div class="order-detail-row">
+
+                <span>
+                    Order Date
+                </span>
+
+                <strong>
+                    {{ order_date }}
+                </strong>
+
+            </div>
+
+
+            <div class="order-detail-row">
+
+                <span>
+                    Payment
+                </span>
+
+                <strong>
+                    {{ payment_method }}
+                </strong>
+
+            </div>
+
+
+            <div class="order-detail-row total-row">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ₹{{ grand_total|floatformat:0 }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- DELIVERY -->
+        <div class="delivery-box">
+
+            <div class="delivery-icon">
+                📦
+            </div>
+
+            <div class="delivery-content">
+
+                <span>
+                    Estimated Delivery
+                </span>
+
+                <strong>
+                    3–5 business days
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="confirmed-actions">
+
+            <a
+                href="{% url 'main:my_orders' %}"
+                class="confirmed-button primary-button"
+            >
+                View My Orders
+            </a>
+
+
+            <a
+                href="{% url 'main:home' %}"
+                class="confirmed-button secondary-button"
+            >
+                Continue Shopping
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,439 @@
+{% extends "admin_panel/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Orders | Giftify Admin
+{% endblock %}
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet" href="{% static 'admin_panel/css/orders.css' %}?v=8">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="orders-page">
+
+    <div class="orders-header">
+
+        <div>
+
+            <h1>
+                Orders
+            </h1>
+
+            <p>
+                Manage and track customer orders
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="orders-summary">
+
+        <!-- Total Orders-->
+        <div class="summary-card">
+
+            <div class="summary-icon total-icon">
+                <img src="{% static 'admin_panel/images/total.png' %}" alt="Total Orders">
+            </div>
+
+            <div class="summary-content">
+
+                <span class="summary-label">
+                    Total Orders
+                </span>
+
+                <strong>
+                    {{ total_orders }}
+                </strong>
+
+            </div>
+
+        </div>
+
+        <!-- Packed -->
+        <div class="summary-card">
+
+            <div class="summary-icon packed-icon">
+                <img src="{% static 'admin_panel/images/packed.png' %}" alt="Packed">
+            </div>
+
+            <div class="summary-content">
+
+                <span class="summary-label">
+                    Packed
+                </span>
+
+                <strong>
+                    {{ packed_orders }}
+                </strong>
+
+            </div>
+
+        </div>
+
+        <!-- Shipped -->
+        <div class="summary-card">
+
+            <div class="summary-icon shipped-icon">
+                <img src="{% static 'admin_panel/images/shipped.png' %}" alt="Shipped">
+            </div>
+
+            <div class="summary-content">
+
+                <span class="summary-label">
+                    Shipped
+                </span>
+
+                <strong>
+                    {{ shipped_orders }}
+                </strong>
+
+            </div>
+
+        </div>
+
+        <!-- Delivered -->
+        <div class="summary-card">
+
+            <div class="summary-icon delivered-icon">
+                <img src="{% static 'admin_panel/images/delivered.png' %}" alt="Delivered">
+            </div>
+
+            <div class="summary-content">
+
+                <span class="summary-label">
+                    Delivered
+                </span>
+
+                <strong>
+                    {{ delivered_orders }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Search, Filter & Date -->
+    <div class="orders-toolbar">
+
+        <div class="orders-search">
+
+            <span class="search-icon">
+                ⌕
+            </span>
+
+            <input
+                type="text"
+                id="orderSearch"
+                placeholder="Search order ID or customer..."
+                autocomplete="off"
+            >
+
+        </div>
+
+        <div class="filter-box">
+
+            <select id="statusFilter">
+
+                <option value="all">
+                    All Status
+                </option>
+
+                <option value="Order Confirmed">
+                    Order Confirmed
+                </option>
+
+                <option value="Packed">
+                    Packed
+                </option>
+
+                <option value="Shipped">
+                    Shipped
+                </option>
+
+                <option value="Delivered">
+                    Delivered
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="date-filter">
+
+            <input
+                type="date"
+                id="dateFilter"
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- Orders Table -->
+    <div class="orders-table-card">
+
+        <div class="table-wrapper">
+
+            <table class="orders-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Order ID
+                        </th>
+
+                        <th>
+                            Customer Name
+                        </th>
+
+                        <th>
+                            Total Amount
+                        </th>
+
+                        <th>
+                            Payment
+                        </th>
+
+                        <th>
+                            Date & Time
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="ordersTableBody">
+
+                    {% for order in orders %}
+
+                    <tr
+                        class="order-row"
+                        data-order-id="{{ order.order_id }}"
+                        data-customer="{{ order.address.name|lower }}"
+                        data-status="{{ order.status }}"
+                        data-date="{{ order.order_date }}"
+                    >
+
+                        <!-- ID -->
+                        <td>
+
+                            <span class="order-id">
+                                {{ order.order_id }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- C Name -->
+                        <td>
+
+                            <div class="customer-cell">
+
+                                <div class="customer-avatar">
+
+                                    {{ order.address.name|slice:":1"|upper }}
+
+                                </div>
+
+                                <span>
+                                    {{ order.address.name }}
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                        <!-- Amt -->
+                        <td>
+
+                            <strong class="order-amount">
+
+                                ₹{{ order.grand_total|floatformat:2 }}
+
+                            </strong>
+
+                        </td>
+
+                        <!-- Pay -->
+                        <td>
+
+                            {% if order.payment_method == "Cash on Delivery" %}
+
+                                <span class="payment-badge cod">
+                                    COD
+                                </span>
+
+                            {% else %}
+
+                                <span class="payment-badge upi">
+                                    UPI
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- Date -->
+                        <td>
+
+                            <span class="order-date">
+
+                                {{ order.order_date }}
+
+                            </span>
+
+                        </td>
+
+                        <!-- Status -->
+                        <td>
+
+                            <span
+                                class="status-badge
+                                {% if order.status == 'Order Confirmed' %}
+                                    confirmed
+                                {% elif order.status == 'Packed' %}
+                                    packed
+                                {% elif order.status == 'Shipped' %}
+                                    shipped
+                                {% elif order.status == 'Delivered' %}
+                                    delivered
+                                {% endif %}"
+                            >
+
+                                {{ order.status }}
+
+                            </span>
+
+                        </td>
+
+                        <!-- Action -->
+                        <td>
+
+                            <a
+                                href="{% url 'admin_panel:order_detail' order.order_id %}?user_id={{ order.user_id|urlencode }}"
+                                class="view-button"
+                            >
+                                View
+                            </a>
+
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="empty-orders"
+                        >
+
+                            <div class="empty-icon">
+                                ♡
+                            </div>
+
+                            <h3>
+                                No orders yet
+                            </h3>
+
+                            <p>
+                                Customer orders will appear here.
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- No Search Result -->
+        <div
+            class="no-results"
+            id="noResults"
+        >
+
+            <div class="no-results-icon">
+                ⌕
+            </div>
+
+            <h3>
+                No orders found
+            </h3>
+
+            <p>
+                Try changing your search or filters.
+            </p>
+
+        </div>
+
+
+        <!-- Pagination -->
+        <div class="pagination-area">
+
+            <button
+                type="button"
+                class="pagination-arrow"
+                id="previousPage"
+            >
+                ‹
+            </button>
+
+            <div
+                class="pagination-numbers"
+                id="paginationNumbers"
+            >
+            </div>
+
+            <button
+                type="button"
+                class="pagination-arrow"
+                id="nextPage"
+            >
+                ›
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script
+    src="{% static 'admin_panel/js/orders.js' %}?v=1"
+></script>
+
+{% endblock %}

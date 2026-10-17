@@ -1,0 +1,1274 @@
+{% extends 'admin_panel/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Edit Gift Hamper | Giftify Admin
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'admin_panel/css/edit_gift_hamper.css' %}?v=20">
+{% endblock %}
+
+{% block content %}
+
+<div class="add-hamper-page">
+
+    <div class="page-header">
+
+        <div class="header-content">
+
+            <h1>Edit Gift Hamper</h1>
+
+            <p>
+                Update your gift hamper details
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'admin_panel:gift_hamper' %}"
+            class="back-btn"
+        >
+            < Back
+        </a>
+
+    </div>
+
+
+    <!-- G H Form -->
+    <form
+        id="hamperForm"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        {% csrf_token %}
+
+        <!-- Info -->
+        <div class="form-card">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>Basic Information</h2>
+
+                    <p>
+                        Enter the basic details of your gift hamper.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <!-- G H Name -->
+                <div class="form-group">
+
+                    <label for="hamper_name">
+                        Hamper Name
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="hamper_name"
+                        name="hamper_name"
+                        value="{{ hamper.name }}"
+                        placeholder="Enter hamper name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Category -->
+                <div class="form-group">
+
+                    <label>
+                        Category
+                        <span class="required">*</span>
+                    </label>
+
+
+                    <div class="category-list-box">
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Birthday"
+                                {% if "Birthday" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Birthday</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Anniversary & Wedding"
+                                {% if "Anniversary & Wedding" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Anniversary & Wedding</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Love & Valentine's"
+                                {% if "Love & Valentine's" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Love & Valentine's</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Chocolate"
+                                {% if "Chocolate" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Chocolate</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Flower"
+                                {% if "Flower" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Flower</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Gourmet & Sweet"
+                                {% if "Gourmet & Sweet" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Gourmet & Sweet</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Beauty & Wellness"
+                                {% if "Beauty & Wellness" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Beauty & Wellness</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Friendship"
+                                {% if "Friendship" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Friendship</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Congratulations"
+                                {% if "Congratulations" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Congratulations</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Thank You"
+                                {% if "Thank You" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Thank You</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Memory & Photo"
+                                {% if "Memory & Photo" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Memory & Photo</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Plants & Green"
+                                {% if "Plants & Green" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Plants & Green</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Accessories & Fashion"
+                                {% if "Accessories & Fashion" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Accessories & Fashion</span>
+
+                        </label>
+
+
+                        <label class="category-option">
+
+                            <input
+                                type="checkbox"
+                                name="category"
+                                value="Mini Gift"
+                                {% if "Mini Gift" in hamper.category %}checked{% endif %}
+                            >
+
+                            <span class="category-checkbox"></span>
+
+                            <span>Mini Gift</span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div><br>
+
+
+            <!-- Desc -->
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="5"
+                    placeholder="Describe this gift hamper..."
+                    required
+                >{{ hamper.description }}</textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- G H Img -->
+        <div class="form-card">
+
+            <div class="section-title">
+
+                <h2>Hamper Image</h2>
+
+                <p>
+                    Upload a new image only if you want to replace
+                    the current image.
+                </p>
+
+            </div>
+
+
+            <!-- Current Img -->
+            {% if hamper.image %}
+
+            <div class="current-image-box">
+
+                <span class="image-label">
+                    Current Image
+                </span>
+
+                <div class="current-image-wrapper">
+
+                    <img
+                        src="{{ hamper.image }}"
+                        alt="{{ hamper.name }}"
+                        class="current-hamper-image"
+                        id="currentHamperImage"
+                        onerror="this.style.display='none'; document.getElementById('imageError').style.display='flex';"
+                    >
+
+                    <div
+                        id="imageError"
+                        class="image-error"
+                        style="display:none;"
+                    >
+
+                        🎁
+
+                        <span>
+                            Image unavailable
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="no-current-image">
+
+                <span class="no-image-icon">
+                    🎁
+                </span>
+
+                <span>
+                    No current image
+                </span>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- New Img -->
+            <div class="form-group image-upload-group">
+
+                <label for="hamperImage">
+                    Replace Image
+                </label>
+
+                <input
+                    type="file"
+                    name="image"
+                    id="hamperImage"
+                    accept="image/*"
+                >
+
+                <small>
+                    Leave empty to keep the current image.
+                    Maximum size: 700 KB.
+                </small>
+
+                <div
+                    id="imageFileName"
+                    class="file-name"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Items -->
+        <div class="form-card">
+
+            <div class="section-title items-header">
+
+                <div>
+
+                    <h2>
+                        Items in Gift Hamper
+                    </h2>
+
+                    <p>
+                        Add the products included in this hamper.
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="addItemBtn"
+                    class="add-item-btn"
+                >
+                    + Add Item
+                </button>
+
+            </div>
+
+
+            <div id="itemsContainer">
+
+                {% if hamper.items %}
+
+                    {% for item in hamper.items %}
+
+                    <div class="item-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Item Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="item_name[]"
+                                value="{{ item.item_name }}"
+                                placeholder="Item name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Price
+                            </label>
+
+                            <input
+                                type="number"
+                                name="item_price[]"
+                                value="{{ item.item_price }}"
+                                placeholder="0.00"
+                                min="0"
+                                step="0.01"
+                                required
+                                class="item-price"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Quantity
+                            </label>
+
+                            <input
+                                type="number"
+                                name="item_quantity[]"
+                                value="{{ item.quantity }}"
+                                min="1"
+                                required
+                                class="item-quantity"
+                            >
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="remove-item-btn"
+                            title="Remove item"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="item-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Item Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="item_name[]"
+                                placeholder="Item name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Price
+                            </label>
+
+                            <input
+                                type="number"
+                                name="item_price[]"
+                                placeholder="0.00"
+                                min="0"
+                                step="0.01"
+                                required
+                                class="item-price"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Quantity
+                            </label>
+
+                            <input
+                                type="number"
+                                name="item_quantity[]"
+                                value="1"
+                                min="1"
+                                required
+                                class="item-quantity"
+                            >
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="remove-item-btn"
+                            title="Remove item"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- SELLING PRICE -->
+            <div class="price-summary">
+
+                <div class="price-row">
+
+                    <span>
+                        Selling Price
+                    </span>
+
+                    <strong>
+                        ₹<span id="sellingPrice">0.00</span>
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Price & Delivery -->
+        <div class="form-card">
+
+            <div class="section-title">
+
+                <h2>
+                    Pricing & Delivery
+                </h2>
+
+                <p>
+                    Set discount and delivery charges.
+                </p>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <!-- Discount -->
+                <div class="form-group">
+
+                    <label for="discount">
+                        Discount
+                    </label>
+
+                    <div class="input-with-symbol">
+
+                        <span>%</span>
+
+                        <input
+                            type="number"
+                            id="discount"
+                            name="discount"
+                            value="{{ hamper.discount|default:0 }}"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Delivery -->
+                <div class="form-group">
+
+                    <label for="delivery_charge">
+                        Delivery Charge
+                    </label>
+
+                    <div class="input-with-symbol">
+
+                        <span>₹</span>
+
+                        <input
+                            type="number"
+                            id="delivery_charge"
+                            name="delivery_charge"
+                            value="{{ hamper.delivery_charge|default:0 }}"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Final Price -->
+            <div class="final-price-box">
+
+                <div>
+
+                    <span class="final-price-label">
+                        Final Price
+                    </span>
+
+                    <small>
+                        Selling price − discount + delivery
+                    </small>
+
+                </div>
+
+                <strong>
+                    ₹<span id="finalPrice">
+                        {{ hamper.final_price|default:0|floatformat:2 }}
+                    </span>
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Stock & Availability -->
+        <div class="form-card">
+
+            <div class="section-title">
+
+                <h2>
+                    Stock & Availability
+                </h2>
+
+                <p>
+                    Manage stock and availability.
+                </p>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <!-- Stock -->
+                <div class="form-group">
+
+                    <label for="stock_quantity">
+                        Stock Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="stock_quantity"
+                        name="stock_quantity"
+                        value="{{ hamper.stock_quantity|default:0 }}"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Availability -->
+                <div class="form-group">
+
+                    <label>
+                        Availability
+                    </label>
+
+                    <div class="radio-group">
+
+                        <label class="radio-option">
+
+                            <input
+                                type="radio"
+                                name="availability"
+                                value="available"
+                                {% if hamper.availability == "available" or not hamper.availability %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <span>
+                                Available
+                            </span>
+
+                        </label>
+
+
+                        <label class="radio-option">
+
+                            <input
+                                type="radio"
+                                name="availability"
+                                value="out_of_stock"
+                                {% if hamper.availability == "out_of_stock" %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <span>
+                                Out of Stock
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Y/N Customization -->
+        <div class="form-card">
+
+            <div class="section-title">
+
+                <h2>
+                    Customization
+                </h2>
+
+                <p>
+                    Allow customers to customize this hamper.
+                </p>
+
+            </div>
+
+
+            <div class="radio-group">
+
+                <label class="radio-option">
+
+                    <input
+                        type="radio"
+                        name="customization"
+                        value="yes"
+                        {% if hamper.customization == "yes" or not hamper.customization %}
+                            checked
+                        {% endif %}
+                    >
+
+                    <span>
+                        Yes, customization available
+                    </span>
+
+                </label>
+
+
+                <label class="radio-option">
+
+                    <input
+                        type="radio"
+                        name="customization"
+                        value="no"
+                        {% if hamper.customization == "no" %}
+                            checked
+                        {% endif %}
+                    >
+
+                    <span>
+                        No customization
+                    </span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a
+                href="{% url 'admin_panel:gift_hamper' %}"
+                class="cancel-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="save-btn"
+            >
+                Save Changes
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* ELEMENTS */
+    const itemsContainer =
+        document.getElementById("itemsContainer");
+
+    const addItemBtn =
+        document.getElementById("addItemBtn");
+
+    const discountInput =
+        document.getElementById("discount");
+
+    const deliveryInput =
+        document.getElementById("delivery_charge");
+
+    const sellingPrice =
+        document.getElementById("sellingPrice");
+
+    const finalPrice =
+        document.getElementById("finalPrice");
+
+    const imageInput =
+        document.getElementById("hamperImage");
+
+    const imageFileName =
+        document.getElementById("imageFileName");
+
+
+
+    /* CALCULATE PRICE */
+    function calculatePrices() {
+
+        let total = 0;
+
+        const rows =
+            itemsContainer.querySelectorAll(".item-row");
+
+
+        rows.forEach(function (row) {
+
+            const priceInput =
+                row.querySelector(".item-price");
+
+            const quantityInput =
+                row.querySelector(".item-quantity");
+
+
+            if (!priceInput || !quantityInput) {
+                return;
+            }
+
+
+            const price =
+                parseFloat(priceInput.value) || 0;
+
+            const quantity =
+                parseInt(quantityInput.value) || 1;
+
+
+            total += price * quantity;
+
+        });
+
+
+        /* DISCOUNT IS PERCENTAGE */
+        const discountPercent =
+            parseFloat(discountInput.value) || 0;
+
+
+        const delivery =
+            parseFloat(deliveryInput.value) || 0;
+
+
+        /* Calculate actual discount amount */
+        const discountAmount =
+            total * discountPercent / 100;
+
+
+        /* Final price */
+        let final =
+            total - discountAmount + delivery;
+
+
+        /* Prevent negative price */
+        if (final < 0) {
+            final = 0;
+        }
+
+
+        /* Display selling price */
+        sellingPrice.textContent =
+            total.toFixed(2);
+
+
+        /* Display final price */
+        finalPrice.textContent =
+            final.toFixed(2);
+
+    }
+
+
+
+    /* ADD ITEM */
+    if (addItemBtn) {
+
+        addItemBtn.addEventListener("click", function () {
+
+            const row =
+                document.createElement("div");
+
+            row.className = "item-row";
+
+
+            row.innerHTML = `
+
+                <div class="form-group">
+
+                    <label>
+                        Item Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="item_name[]"
+                        placeholder="Item name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Price
+                    </label>
+
+                    <input
+                        type="number"
+                        name="item_price[]"
+                        placeholder="0.00"
+                        min="0"
+                        step="0.01"
+                        required
+                        class="item-price"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        name="item_quantity[]"
+                        value="1"
+                        min="1"
+                        required
+                        class="item-quantity"
+                    >
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="remove-item-btn"
+                    title="Remove item"
+                >
+                    ×
+                </button>
+
+            `;
+
+
+            itemsContainer.appendChild(row);
+
+            calculatePrices();
+
+        });
+
+    }
+
+
+
+    /* REMOVE ITEM */
+    itemsContainer.addEventListener("click", function (event) {
+
+        const removeButton =
+            event.target.closest(".remove-item-btn");
+
+
+        if (!removeButton) {
+            return;
+        }
+
+
+        const rows =
+            itemsContainer.querySelectorAll(".item-row");
+
+
+        if (rows.length <= 1) {
+
+            alert(
+                "At least one item is required."
+            );
+
+            return;
+        }
+
+
+        removeButton
+            .closest(".item-row")
+            .remove();
+
+
+        calculatePrices();
+
+    });
+
+
+
+    /* PRICE INPUT CHANGES */
+    itemsContainer.addEventListener(
+        "input",
+        calculatePrices
+    );
+
+
+    if (discountInput) {
+
+        discountInput.addEventListener(
+            "input",
+            calculatePrices
+        );
+
+    }
+
+
+    if (deliveryInput) {
+
+        deliveryInput.addEventListener(
+            "input",
+            calculatePrices
+        );
+
+    }
+
+
+
+    /* IMAGE REPLACEMENT */
+    if (imageInput) {
+
+        imageInput.addEventListener(
+            "change",
+            function () {
+
+                if (
+                    imageInput.files &&
+                    imageInput.files.length > 0
+                ) {
+
+                    const file =
+                        imageInput.files[0];
+
+
+                    /* Show file name */
+                    imageFileName.textContent =
+                        file.name;
+
+
+                    /* CHECK FILE SIZE */
+                    const maxSize =
+                        700 * 1024;
+
+
+                    if (file.size > maxSize) {
+
+                        alert(
+                            "Image size must be 700 KB or less."
+                        );
+
+                        imageInput.value = "";
+
+                        imageFileName.textContent = "";
+
+                        return;
+                    }
+
+
+                    /* CHECK IMAGE */
+                    if (!file.type.startsWith("image/")) {
+
+                        alert(
+                            "Please select a valid image."
+                        );
+
+                        imageInput.value = "";
+
+                        imageFileName.textContent = "";
+
+                        return;
+                    }
+
+
+                    /* REPLACE CURRENT IMAGE DIRECTLY */
+                    const reader =
+                        new FileReader();
+
+
+                    reader.onload =
+                        function (event) {
+
+                            const currentImage =
+                                document.querySelector(
+                                    ".current-hamper-image"
+                                );
+
+
+                            if (currentImage) {
+
+                                currentImage.src =
+                                    event.target.result;
+
+                                currentImage.style.display =
+                                    "block";
+
+                            }
+
+                        };
+
+
+                    reader.readAsDataURL(file);
+
+                } else {
+
+                    imageFileName.textContent = "";
+
+                }
+
+            }
+        );
+
+    }
+
+
+
+    /* INITIAL PRICE CALCULATION */
+    calculatePrices();
+
+});
+
+</script>
+
+{% endblock %}
