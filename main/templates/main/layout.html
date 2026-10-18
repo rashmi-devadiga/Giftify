@@ -4,6 +4,7 @@
 
 <html lang="en">
 
+
 <head>
 
     <meta charset="UTF-8">
@@ -13,26 +14,65 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <!-- Page Title -->
     <title>
         {% block title %}Giftify{% endblock %}
     </title>
 
-    <link
-        rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- SEO Description -->
+    <meta
+        name="description"
+        content="Discover beautiful gift hampers, customize gifts, and celebrate every occasion with Giftify."
+    >
 
+    <!-- Open Graph Metadata for LinkedIn Preview -->
+    <meta
+        property="og:title"
+        content="Giftify - Create. Customize. Celebrate."
+    >
 
+    <meta
+        property="og:description"
+        content="Explore gift hampers, customize your gifts, and find the perfect present for every occasion."
+    >
+
+    <meta
+        property="og:type"
+        content="website"
+    >
+
+    <meta
+        property="og:url"
+        content="https://giftify-y53w.onrender.com/"
+    >
+
+    <!-- Replace with your actual publicly accessible image URL -->
+    <meta
+        property="og:image"
+        content="YOUR_PUBLIC_IMAGE_URL"
+    >
+
+    <meta
+        property="og:image:alt"
+        content="Giftify customizable gift hampers"
+    >
+
+    <!-- Fonts -->
     <link
         rel="preconnect"
         href="https://fonts.googleapis.com"
-        crossorigin
     >
 
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
         rel="stylesheet"
     >
-
 
     <!-- Main Customer CSS -->
     <link
@@ -40,18 +80,15 @@
         href="{% static 'main/css/layout.css' %}?v=32"
     >
 
-
     <!-- Login CSS -->
     <link
         rel="stylesheet"
         href="{% static 'main/css/login.css' %}?v=19"
     >
 
-
     {% block extra_css %}{% endblock %}
 
 </head>
-
 
 <body>
 
